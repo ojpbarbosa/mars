@@ -10,8 +10,11 @@ class NoDuplo<Dado>
 
     public NoDuplo(Dado novoDado)
     {
-        info = novoDado;
+        Ant = Prox = null;
+        Info = novoDado;
     }
 
-public Dado Info { get => info; set => info = value; }
+    public NoDuplo<Dado> Ant { get => ant; set => ant = value; }
+    public Dado Info { get => info; set => info = value; }
+    public NoDuplo<Dado> Prox { get => prox; set => prox = value;}
 }

@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMarte));
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.slMensagem = new System.Windows.Forms.ToolStripStatusLabel();
-            this.botoesImageList = new System.Windows.Forms.ImageList(this.components);
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.inicioButton = new System.Windows.Forms.ToolStripButton();
             this.anteriorButton = new System.Windows.Forms.ToolStripButton();
@@ -105,20 +105,20 @@
             this.slMensagem.Size = new System.Drawing.Size(76, 17);
             this.slMensagem.Text = "Registro 1/23";
             // 
-            // botoesImageList
+            // imageList
             // 
-            this.botoesImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("botoesImageList.ImageStream")));
-            this.botoesImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.botoesImageList.Images.SetKeyName(0, "first.bmp");
-            this.botoesImageList.Images.SetKeyName(1, "prior.bmp");
-            this.botoesImageList.Images.SetKeyName(2, "next.bmp");
-            this.botoesImageList.Images.SetKeyName(3, "last.bmp");
-            this.botoesImageList.Images.SetKeyName(4, "Oeil2.bmp");
-            this.botoesImageList.Images.SetKeyName(5, "Add.bmp");
-            this.botoesImageList.Images.SetKeyName(6, "UNDO.BMP");
-            this.botoesImageList.Images.SetKeyName(7, "Save.bmp");
-            this.botoesImageList.Images.SetKeyName(8, "Minus.bmp");
-            this.botoesImageList.Images.SetKeyName(9, "CLOSE1.BMP");
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "first.bmp");
+            this.imageList.Images.SetKeyName(1, "prior.bmp");
+            this.imageList.Images.SetKeyName(2, "next.bmp");
+            this.imageList.Images.SetKeyName(3, "last.bmp");
+            this.imageList.Images.SetKeyName(4, "Oeil2.bmp");
+            this.imageList.Images.SetKeyName(5, "Add.bmp");
+            this.imageList.Images.SetKeyName(6, "UNDO.BMP");
+            this.imageList.Images.SetKeyName(7, "Save.bmp");
+            this.imageList.Images.SetKeyName(8, "Minus.bmp");
+            this.imageList.Images.SetKeyName(9, "CLOSE1.BMP");
             // 
             // toolStrip
             // 
@@ -556,7 +556,7 @@
             this.MinimumSize = new System.Drawing.Size(640, 360);
             this.Name = "FormMarte";
             this.Text = "Cidades de Marte";
-            this.Load += new System.EventHandler(this.FrmAgenda_Load);
+            this.Load += new System.EventHandler(this.FormMarte_Load);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.toolStrip.ResumeLayout(false);
@@ -578,7 +578,7 @@
 
     #endregion
     private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ImageList botoesImageList;
+        private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripButton inicioButton;
         private System.Windows.Forms.ToolStripButton anteriorButton;

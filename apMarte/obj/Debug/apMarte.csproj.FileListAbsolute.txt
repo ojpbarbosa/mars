@@ -9,3 +9,14 @@ C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\obj\Debug\apMarte.cspro
 C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\obj\Debug\apMarte.csproj.CoreCompileInputs.cache
 C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\obj\Debug\apCaminhos.exe
 C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\obj\Debug\apCaminhos.pdb
+C:\Temp\apMarte\obj\Debug\apMarte.csproj.AssemblyReference.cache
+C:\Temp\apMarte\obj\Debug\apMarte.csproj.SuggestedBindingRedirects.cache
+C:\Temp\apMarte\obj\Debug\apMarte.FormMarte.resources
+C:\Temp\apMarte\obj\Debug\apMarte.csproj.GenerateResource.cache
+C:\Temp\apMarte\obj\Debug\apCaminhos.exe
+C:\Temp\apMarte\obj\Debug\apCaminhos.pdb
+C:\Temp\apMarte\bin\Debug\apCaminhos.exe.config
+C:\Temp\apMarte\bin\Debug\apCaminhos.exe
+C:\Temp\apMarte\bin\Debug\apCaminhos.pdb
+C:\Temp\apMarte\obj\Debug\apCaminhos.Properties.Resources.resources
+C:\Temp\apMarte\obj\Debug\apMarte.csproj.CoreCompileInputs.cache

@@ -3,35 +3,35 @@ using System.Windows.Forms;
 
 namespace apMarte
 {
-  public partial class FormMarte : Form
-  {
-    public FormMarte()
+    public partial class FormMarte : Form
     {
-      InitializeComponent();
-    }
+        private ListaDupla<Cidade> lista;
 
-    private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-    {
-
-    }
-
-    private void tabPage1_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void FrmAgenda_Load(object sender, EventArgs e)
-    {
-      int indice = 0;
-      toolStrip.ImageList = botoesImageList;
-
-      foreach (ToolStripItem item in toolStrip.Items)
-      {
-        if (item is ToolStripButton)
+        public FormMarte()
         {
-            (item as ToolStripButton).ImageIndex = indice++;
+            InitializeComponent();
         }
-      }
+
+        private void FormMarte_Load(object sender, EventArgs e)
+        {
+            int indice = 0;
+            toolStrip.ImageList = imageList;
+
+            foreach (ToolStripItem item in toolStrip.Items)
+            {
+                if (item is ToolStripButton)
+                {
+                    (item as ToolStripButton).ImageIndex = indice++;
+                }
+            }
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                lista = new ListaDupla<Cidade>();
+
+                lista.LerDados(openFileDialog.FileName);
+
+            }
+        }
     }
-  }
 }
