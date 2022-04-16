@@ -3,7 +3,6 @@ C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\bin\Debug\apCaminhos.ex
 C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\bin\Debug\apCaminhos.pdb
 C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\obj\Debug\apMarte.csproj.AssemblyReference.cache
 C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\obj\Debug\apMarte.csproj.SuggestedBindingRedirects.cache
-C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\obj\Debug\apCaminhos.FormMarte.resources
 C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\obj\Debug\apCaminhos.Properties.Resources.resources
 C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\obj\Debug\apMarte.csproj.GenerateResource.cache
 C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\obj\Debug\apMarte.csproj.CoreCompileInputs.cache
@@ -20,3 +19,4 @@ C:\Temp\apMarte\bin\Debug\apCaminhos.exe
 C:\Temp\apMarte\bin\Debug\apCaminhos.pdb
 C:\Temp\apMarte\obj\Debug\apCaminhos.Properties.Resources.resources
 C:\Temp\apMarte\obj\Debug\apMarte.csproj.CoreCompileInputs.cache
+C:\www\cotuca.unicamp.br\semesters\third\ds\mars\apMarte\obj\Debug\apMarte.FormMarte.resources

@@ -38,7 +38,7 @@ class ListaDupla<Dado> : IDados<Dado>
             {
                 Dado dado = new Dado().LerRegistro(arquivo);
 
-                IncluirAposFim(dado);
+                Incluir(dado);
             }
         }
     }
@@ -239,7 +239,48 @@ class ListaDupla<Dado> : IDados<Dado>
 
     public bool Incluir(Dado novoValor)         // (bool) Inserir nó com Dado em ordem crescente
     {
-        throw new NotImplementedException();
+        if (novoValor == null)
+        {
+            return false;
+        }
+
+        if (!Existe(novoValor, out int onde))
+        {
+            if (EstaVazio) // se a lista está vazia
+            {
+                IncluirNoInicio(novoValor); // o dado é inserido no incio
+            }
+
+            else
+            {
+                if (atual == null && primeiro != null) // se dado < primeiro
+                {
+                    IncluirNoInicio(novoValor); // o dado é inserido no início
+                }
+
+                else if (atual == ultimo) // se atual foi posicionado no último
+                {
+                    IncluirAposFim(novoValor); // o dado é inserido após o fim
+                }
+
+                else // caso contrário
+                {
+                    NoDuplo<Dado> novoNo = new NoDuplo<Dado>(novoValor);
+
+                    // o dado é inserido na sua posição correspondente
+                    novoNo.Prox = atual.Prox;
+                    novoNo.Prox.Ant = novoNo;
+                    atual.Prox = novoNo;
+                    novoNo.Ant = atual;
+
+                    quantosNos++;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     public bool Incluir(Dado novoValor, int posicaoDeInclusao)  // inclui novo nó na posição indicada da lista
@@ -247,7 +288,7 @@ class ListaDupla<Dado> : IDados<Dado>
         throw new NotImplementedException();
     }
 
-    public Dado this[int indice] /// just like an array (list[0])
+    public Dado this[int indice] /// lista[0]
     {
         get
         {
