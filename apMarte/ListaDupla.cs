@@ -258,8 +258,8 @@ class ListaDupla<Dado> : IDados<Dado>
         set
         {
             PosicionarEm(indice);
-            
-            atual = value;
+
+            atual.Info = value;
         }
     }
     
@@ -275,23 +275,57 @@ class ListaDupla<Dado> : IDados<Dado>
 
     public void ExibirDados()   // lista os dados armazenados na lista em modo console
     {
-        throw new NotImplementedException();
+        PosicionarNoPrimeiro();
+
+        while (atual != null)
+        {
+            Console.WriteLine(atual.Info.ToString());
+
+            atual = atual.Prox;
+        }
     }
 
     public void ExibirDados(ListBox lista)  // lista os dados armazenados na lista no listbox passado como parâmetro
     {
-        throw new NotImplementedException();
+        PosicionarNoPrimeiro();
+
+        lista.Items.Clear();
+
+        while (atual != null)
+        {
+            lista.Items.Add(atual.Info.ToString());
+
+            atual = atual.Prox;
+        }
     }
 
     public void ExibirDados(ComboBox lista) // lista os dados armazenados na lista no combobox passado como parâmetro
     {
-        throw new NotImplementedException();
+        PosicionarNoPrimeiro();
+
+        lista.Items.Clear();
+
+        while (atual != null)
+        {
+            lista.Items.Add(atual.Info.ToString());
+
+            atual = atual.Prox;
+        }
     }
 
 
     public void ExibirDados(TextBox lista)
     {
-        throw new NotImplementedException();
+        PosicionarNoPrimeiro();
+
+        lista.Text = "";
+
+        while (atual != null)
+        {
+            lista.Text += $"{atual.Info}\n";
+
+            atual = atual.Prox;
+        }
     }
 
     public void Ordenar()
