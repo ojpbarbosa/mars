@@ -168,7 +168,21 @@ class ListaDupla<Dado> : IDados<Dado>
 
     public bool Excluir(Dado dadoAExcluir)
     {
-        throw new NotImplementedException();
+        if (dadoAExcluir == null)
+        {
+            return false;
+        }
+
+        if (!Existe(dadoAExcluir, out int ondeEsta))
+        {
+            return false;
+        }
+
+        atual.Ant.Prox = atual.Prox;
+        atual.Prox.Ant = atual.Ant;
+        quantosNos--;
+
+        return true;
     }
 
     public bool IncluirNoInicio(Dado novoValor)
@@ -245,7 +259,7 @@ class ListaDupla<Dado> : IDados<Dado>
         {
             PosicionarEm(indice);
             
-            atual.Info = value;
+            atual = value;
         }
     }
     

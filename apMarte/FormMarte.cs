@@ -30,7 +30,6 @@ namespace apMarte
                 lista = new ListaDupla<Cidade>();
 
                 lista.LerDados(openFileDialog.FileName);
-
             }
         }
     }
