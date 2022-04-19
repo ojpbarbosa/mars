@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.IO;
 
 public enum Situacao
-{
+{                        
     navegando, incluindo, pesquisando, editando, excluindo
 }
 interface IDados<Dado> where Dado : IComparable<Dado>, IRegistro<Dado>, new()

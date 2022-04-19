@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMarte));
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.slMensagem = new System.Windows.Forms.ToolStripStatusLabel();
+            this.mensagemStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.inicioButton = new System.Windows.Forms.ToolStripButton();
@@ -92,18 +92,18 @@
             this.statusStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.slMensagem});
+            this.mensagemStatusLabel});
             this.statusStrip.Location = new System.Drawing.Point(0, 649);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(1534, 22);
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip1";
             // 
-            // slMensagem
+            // mensagemStatusLabel
             // 
-            this.slMensagem.Name = "slMensagem";
-            this.slMensagem.Size = new System.Drawing.Size(76, 17);
-            this.slMensagem.Text = "Registro 1/23";
+            this.mensagemStatusLabel.Name = "mensagemStatusLabel";
+            this.mensagemStatusLabel.Size = new System.Drawing.Size(76, 17);
+            this.mensagemStatusLabel.Text = "Registro 1/23";
             // 
             // imageList
             // 
@@ -153,6 +153,7 @@
             this.inicioButton.Size = new System.Drawing.Size(40, 39);
             this.inicioButton.Text = "Início";
             this.inicioButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.inicioButton.Click += new System.EventHandler(this.inicioButton_Click);
             // 
             // anteriorButton
             // 
@@ -180,6 +181,7 @@
             this.ultimoButton.Size = new System.Drawing.Size(47, 39);
             this.ultimoButton.Text = "Último";
             this.ultimoButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.ultimoButton.Click += new System.EventHandler(this.ultimoButton_Click);
             // 
             // toolStripSeparator1
             // 
@@ -620,7 +622,7 @@
         private System.Windows.Forms.Button alterarLigacaoButton;
         private System.Windows.Forms.Button excluirLigacaoButton;
         private System.Windows.Forms.Button incluirLigacaoButton;
-        private System.Windows.Forms.ToolStripStatusLabel slMensagem;
+        private System.Windows.Forms.ToolStripStatusLabel mensagemStatusLabel;
         private System.Windows.Forms.PictureBox mapaPictureBox;
     }
 }

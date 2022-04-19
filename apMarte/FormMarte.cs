@@ -22,7 +22,7 @@ namespace apMarte
                 if (item is ToolStripButton)
                 {
                     (item as ToolStripButton).ImageIndex = indice++;
-                }
+                }     
             }
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -31,6 +31,56 @@ namespace apMarte
 
                 lista.LerDados(openFileDialog.FileName);
                 lista.ExibirDados(cidadesListBox);
+            }
+        }
+
+        private void inicioButton_Click(object sender, EventArgs e)
+        {
+            lista.PosicionarNoPrimeiro();
+
+            Cidade cidade = lista.DadoAtual();
+
+            if (cidade != null)
+            {
+                codigoCidadeTextBox.Text = cidade.Codigo;
+                nomeCidadeTextBox.Text = cidade.Nome;
+                xNumericUpDown.Value = (decimal)cidade.X;
+                yNumericUpDown.Value = (decimal)cidade.Y;
+
+                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+            }
+
+            else
+            {
+                codigoCidadeTextBox.Text = "";
+                nomeCidadeTextBox.Text = "";
+                xNumericUpDown.Value = 0;
+                yNumericUpDown.Value = 0;
+            }
+        }
+
+        private void ultimoButton_Click(object sender, EventArgs e)
+        {
+            lista.PosicionarNoUltimo();
+
+            Cidade cidade = lista.DadoAtual();
+
+            if (cidade != null)
+            {
+                codigoCidadeTextBox.Text = cidade.Codigo;
+                nomeCidadeTextBox.Text = cidade.Nome;
+                xNumericUpDown.Value = (decimal)cidade.X;
+                yNumericUpDown.Value = (decimal)cidade.Y;
+
+                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+            }
+
+            else
+            {
+                codigoCidadeTextBox.Text = "";
+                nomeCidadeTextBox.Text = "";
+                xNumericUpDown.Value = 0;
+                yNumericUpDown.Value = 0;
             }
         }
     }

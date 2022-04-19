@@ -7,38 +7,48 @@ class ListaDupla<Dado> : IDados<Dado>
 {
     NoDuplo<Dado> primeiro, ultimo, atual;
     int quantosNos;
+    private Situacao situacaoAtual;
 
     public ListaDupla()
     {
         primeiro = ultimo = atual = null;
-        quantosNos = 0; 
+        quantosNos = 0;
     }
 
-    public Situacao SituacaoAtual { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public Situacao SituacaoAtual { get => situacaoAtual; set => situacaoAtual = value; }
     public int PosicaoAtual { 
         get 
         { 
-            Existe(atual.Info, out int posicao); 
-            return posicao;
+            if (Existe(DadoAtual(), out int posicao))
+            {
+                return posicao;
+            }
+
+            else
+            {
+                return -1;
+            }
         }
-        set => throw new NotImplementedException(); 
+        set => PosicionarEm(value); 
     }
     public bool EstaNoInicio { get => atual == primeiro; }
     public bool EstaNoFim { get => atual == ultimo; }
     public bool EstaVazio { get => quantosNos == 0; }          // (bool) Verificar se está vazia
     public int Tamanho { get => quantosNos; }
+    public NoDuplo<Dado> Primeiro { get => primeiro; }
+    public NoDuplo<Dado> Ultimo { get => ultimo; }
 
     public void LerDados(string nomeArquivo)    // fará a leitura e armazenamento dos dados do arquivo cujo nome é passado por parâmetro
     {
         if (nomeArquivo != null)
         {
+            situacaoAtual = Situacao.editando;
+
             StreamReader arquivo = new StreamReader(nomeArquivo);
 
             while (!arquivo.EndOfStream)
             {
-                Dado dado = new Dado().LerRegistro(arquivo);
-
-                Incluir(dado);
+                Incluir(new Dado().LerRegistro(arquivo));
             }
         }
     }
@@ -47,7 +57,11 @@ class ListaDupla<Dado> : IDados<Dado>
     {
         if (nomeArquivo != null)
         {
+            situacaoAtual = Situacao.editando;
+
             StreamWriter arquivo = new StreamWriter(nomeArquivo);
+
+            PosicionarNoPrimeiro();
 
             while (!EstaNoFim)
             {
@@ -58,41 +72,41 @@ class ListaDupla<Dado> : IDados<Dado>
         }
     }
 
-    public void PosicionarNoPrimeiro()        // Posicionar atual no primeiro nó para ser acessado
+    public void PosicionarNoPrimeiro()
     {
-        atual = primeiro;
+        atual = primeiro; // o atual é posicionado no primeiro nó
     }
 
-    public void RetrocederPosicao()        // Retroceder atual para o nó anterior para ser acessado
+    public void RetrocederPosicao()
     {
-        if (atual != null)
+        if (atual != null) // se atual for diferente de null
         {
-            atual = atual.Ant;
+            atual = atual.Ant; // o atual é posicionado no nó anterior
         }
     }
 
     public void AvancarPosicao()
     {
-        if (atual != null)
+        if (atual != null) // se atual for diferente de null
         {
-            atual = atual.Prox;
+            atual = atual.Prox; // o atual é posicionado no próximo nó
         }
     }
 
-    public void PosicionarNoUltimo()        // posicionar atual no último nó para ser acessado
+    public void PosicionarNoUltimo()
     {
-        atual = ultimo;
+        atual = ultimo; // o atual é posicionado no último nó
     }
 
     public void PosicionarEm(int posicaoDesejada)
     {
-        PosicionarNoPrimeiro();
+        PosicionarNoPrimeiro(); // o atual é posicionado no primeiro nó
 
-        for (int i = 0; i < posicaoDesejada; i++)
+        for (int i = 0; i < posicaoDesejada; i++) // enquanto i for menor que a posi
         {
             if (atual != null)
             {
-                atual = atual.Prox;
+                AvancarPosicao();
             }
         }
     }
@@ -103,6 +117,8 @@ class ListaDupla<Dado> : IDados<Dado>
     // onde deveria estar o nó procurado
     public bool Existe(Dado procurado, out int ondeEsta)
     {
+        situacaoAtual = Situacao.pesquisando;
+
         PosicionarNoPrimeiro();
 
         if (EstaVazio || procurado == null)
@@ -141,22 +157,22 @@ class ListaDupla<Dado> : IDados<Dado>
 
             else
             {
-                if (procurado.CompareTo(atual.Info) == 0)
+                if (procurado.CompareTo(DadoAtual()) == 0)
                 {
                     achou = true;
                 }
 
                 else
                 {
-                    if (procurado.CompareTo(atual.Info) > 0)
+                    if (procurado.CompareTo(atual.Prox.Info) < 0 || procurado.CompareTo(DadoAtual()) > 0)
                     {
+                        // Pociosionar atual aqui(???). Retornar ondeEsta(????) 
                         fim = true;
                     }
 
                     else
                     {
                         AvancarPosicao();
-
                         ondeEsta++;
                     }
                 }
@@ -168,25 +184,34 @@ class ListaDupla<Dado> : IDados<Dado>
 
     public bool Excluir(Dado dadoAExcluir)
     {
+
         if (dadoAExcluir == null)
         {
             return false;
         }
 
-        if (!Existe(dadoAExcluir, out int ondeEsta))
+        if (Existe(dadoAExcluir, out int ondeEsta))
         {
-            return false;
+            situacaoAtual = Situacao.excluindo;
+            
+            PosicionarEm(ondeEsta); // PosicaoAtual = ondeEsta;
+
+            atual.Ant.Prox = atual.Prox;
+            atual.Prox.Ant = atual.Ant;
+            quantosNos--;
+
+            AvancarPosicao();
+
+            return true;
         }
 
-        atual.Ant.Prox = atual.Prox;
-        atual.Prox.Ant = atual.Ant;
-        quantosNos--;
-
-        return true;
+        return false;
     }
 
     public bool IncluirNoInicio(Dado novoValor)
     {
+        situacaoAtual = Situacao.incluindo;
+
         if (novoValor == null)
         {
             return false;
@@ -213,6 +238,8 @@ class ListaDupla<Dado> : IDados<Dado>
 
     public bool IncluirAposFim(Dado novoValor)
     {
+        situacaoAtual = Situacao.incluindo;
+
         if (novoValor == null)
         {
             return false;
@@ -239,12 +266,14 @@ class ListaDupla<Dado> : IDados<Dado>
 
     public bool Incluir(Dado novoValor)         // (bool) Inserir nó com Dado em ordem crescente
     {
+        situacaoAtual = Situacao.incluindo;
+
         if (novoValor == null)
         {
             return false;
         }
 
-        if (!Existe(novoValor, out int onde))
+        if (!Existe(novoValor, out _))
         {
             if (EstaVazio) // se a lista está vazia
             {
@@ -253,7 +282,7 @@ class ListaDupla<Dado> : IDados<Dado>
 
             else
             {
-                if (atual == null && primeiro != null) // se dado < primeiro
+                if (atual == null && primeiro != null) // se dado for menor que primeiro
                 {
                     IncluirNoInicio(novoValor); // o dado é inserido no início
                 }
@@ -265,10 +294,12 @@ class ListaDupla<Dado> : IDados<Dado>
 
                 else // caso contrário
                 {
-                    NoDuplo<Dado> novoNo = new NoDuplo<Dado>(novoValor);
+                    NoDuplo<Dado> novoNo = new NoDuplo<Dado>(novoValor)
+                    {
 
-                    // o dado é inserido na sua posição correspondente
-                    novoNo.Prox = atual.Prox;
+                        // o dado é inserido na sua posição correspondente
+                        Prox = atual.Prox
+                    };
                     novoNo.Prox.Ant = novoNo;
                     atual.Prox = novoNo;
                     novoNo.Ant = atual;
@@ -285,22 +316,46 @@ class ListaDupla<Dado> : IDados<Dado>
 
     public bool Incluir(Dado novoValor, int posicaoDeInclusao)  // inclui novo nó na posição indicada da lista
     {
-        throw new NotImplementedException();
+        situacaoAtual = Situacao.incluindo;
+
+        if (novoValor == null)
+        {
+            return false;
+        }
+
+        if (!Existe(novoValor, out int ondeEsta))
+        {
+            PosicionarEm(posicaoDeInclusao);
+
+            NoDuplo<Dado> novoNo = new NoDuplo<Dado>(novoValor);
+
+            atual.Ant.Prox = novoNo;
+            novoNo.Ant = atual.Ant;
+            novoNo.Prox = atual;
+            atual.Ant = novoNo;
+            atual = novoNo;
+
+            return true;
+        }
+
+        return false;
     }
 
-    public Dado this[int indice] /// lista[0]
+    public Dado this[int indice] // lista[0]
     {
         get
         {
             PosicionarEm(indice);
 
-            return atual.Info;
+            return DadoAtual();
         }
         set
         {
             PosicionarEm(indice);
 
             atual.Info = value;
+
+            situacaoAtual = Situacao.editando;
         }
     }
     
@@ -314,63 +369,86 @@ class ListaDupla<Dado> : IDados<Dado>
         return default;
     }
 
-    public void ExibirDados()   // lista os dados armazenados na lista em modo console
+    public void ExibirDados() // lista os dados armazenados na lista em modo console
     {
+        situacaoAtual = Situacao.navegando;
+
         PosicionarNoPrimeiro();
 
         while (atual != null)
         {
-            Console.WriteLine(atual.Info.ToString());
+            Console.WriteLine(DadoAtual().ToString());
 
-            atual = atual.Prox;
+            AvancarPosicao();
         }
     }
 
     public void ExibirDados(ListBox lista)  // lista os dados armazenados na lista no listbox passado como parâmetro
     {
+        situacaoAtual = Situacao.navegando;
+
         PosicionarNoPrimeiro();
 
         lista.Items.Clear();
 
         while (atual != null)
         {
-            lista.Items.Add(atual.Info.ToString());
+            lista.Items.Add(DadoAtual().ToString());
 
-            atual = atual.Prox;
+            AvancarPosicao();
         }
     }
 
     public void ExibirDados(ComboBox lista) // lista os dados armazenados na lista no combobox passado como parâmetro
     {
+        situacaoAtual = Situacao.navegando;
+
         PosicionarNoPrimeiro();
 
         lista.Items.Clear();
 
         while (atual != null)
         {
-            lista.Items.Add(atual.Info.ToString());
+            lista.Items.Add(DadoAtual().ToString());
 
-            atual = atual.Prox;
+            AvancarPosicao();
         }
     }
 
-
     public void ExibirDados(TextBox lista)
     {
+        situacaoAtual = Situacao.navegando;
+
         PosicionarNoPrimeiro();
 
         lista.Text = "";
 
         while (atual != null)
         {
-            lista.Text += $"{atual.Info}\n";
+            lista.Text += $"{DadoAtual()}\n";
 
-            atual = atual.Prox;
+            AvancarPosicao();
         }
     }
 
     public void Ordenar()
     {
-        throw new NotImplementedException();
+        situacaoAtual = Situacao.editando;
+
+        ListaDupla<Dado> ordernada = new ListaDupla<Dado>();
+
+        PosicionarNoPrimeiro();
+
+        while (!EstaVazio)
+        {
+            ordernada.Incluir(DadoAtual());
+
+            Excluir(DadoAtual());
+
+            AvancarPosicao();
+        }
+
+        primeiro = ordernada.Primeiro;
+        ultimo = ordernada.Ultimo;
     }
 }
