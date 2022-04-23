@@ -95,7 +95,7 @@
             this.mensagemStatusLabel});
             this.statusStrip.Location = new System.Drawing.Point(0, 649);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1534, 22);
+            this.statusStrip.Size = new System.Drawing.Size(1370, 22);
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -141,7 +141,7 @@
             this.sairButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(1534, 42);
+            this.toolStrip.Size = new System.Drawing.Size(1370, 42);
             this.toolStrip.TabIndex = 3;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -163,6 +163,7 @@
             this.anteriorButton.Size = new System.Drawing.Size(54, 39);
             this.anteriorButton.Text = "Anterior";
             this.anteriorButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.anteriorButton.Click += new System.EventHandler(this.anteriorButton_Click);
             // 
             // proximoButton
             // 
@@ -547,7 +548,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1534, 671);
+            this.ClientSize = new System.Drawing.Size(1370, 671);
             this.Controls.Add(this.mapaPictureBox);
             this.Controls.Add(this.caminhosGroupBox);
             this.Controls.Add(this.cidadesGroupBox);

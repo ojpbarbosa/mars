@@ -83,5 +83,27 @@ namespace apMarte
                 yNumericUpDown.Value = 0;
             }
         }
+        
+        private void anteriorButton_Click(object sender, EventArgs e)
+        {
+            if (lista.PosicaoAtual - 1 < 0)
+            {
+                codigoCidadeTextBox.Text = "";
+                nomeCidadeTextBox.Text = "";
+                xNumericUpDown.Value = 0;
+                yNumericUpDown.Value = 0;
+            }
+
+            else
+            {
+                lista.PosicionarEm(lista.PosicaoAtual - 1);
+                Cidade cidade = lista.DadoAtual();
+
+                codigoCidadeTextBox.Text = cidade.Codigo;
+                nomeCidadeTextBox.Text = cidade.Nome;
+                xNumericUpDown.Value = (decimal)cidade.X;
+                yNumericUpDown.Value = (decimal)cidade.Y;
+            }
+        }
     }
 }

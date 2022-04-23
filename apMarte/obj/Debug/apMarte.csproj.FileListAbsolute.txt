@@ -42,3 +42,13 @@ F:\mars\apMarte\obj\Debug\apMarte.csproj.GenerateResource.cache
 F:\mars\apMarte\obj\Debug\apMarte.csproj.CoreCompileInputs.cache
 F:\mars\apMarte\obj\Debug\apCaminhos.exe
 F:\mars\apMarte\obj\Debug\apCaminhos.pdb
+E:\INI31\mars\apMarte\bin\Debug\apCaminhos.exe.config
+E:\INI31\mars\apMarte\bin\Debug\apCaminhos.exe
+E:\INI31\mars\apMarte\bin\Debug\apCaminhos.pdb
+E:\INI31\mars\apMarte\obj\Debug\apMarte.csproj.AssemblyReference.cache
+E:\INI31\mars\apMarte\obj\Debug\apMarte.FormMarte.resources
+E:\INI31\mars\apMarte\obj\Debug\apCaminhos.Properties.Resources.resources
+E:\INI31\mars\apMarte\obj\Debug\apMarte.csproj.GenerateResource.cache
+E:\INI31\mars\apMarte\obj\Debug\apMarte.csproj.CoreCompileInputs.cache
+E:\INI31\mars\apMarte\obj\Debug\apCaminhos.exe
+E:\INI31\mars\apMarte\obj\Debug\apCaminhos.pdb
