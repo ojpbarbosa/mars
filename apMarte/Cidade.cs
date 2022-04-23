@@ -14,17 +14,17 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
               iniY = iniX + tamX;
 
     string codigo, nome;
-    float x, y;
+    decimal x, y;
 
     public string Codigo { get => codigo; set => codigo = value.PadLeft(tamCodigo, '0').Substring(0, tamCodigo); }
     public string Nome { get => nome; set => nome = value.PadRight(tamCodigo, ' ').Substring(0, tamNome); }
-    public float X { get => x; set => x = value; }
-    public float Y { get => y; set => y = value; }
+    public decimal X { get => x; set => x = value; }
+    public decimal Y { get => y; set => y = value; }
 
     public Cidade()
     { }
 
-    public Cidade(string codigo, string nome, float x, float y)
+    public Cidade(string codigo, string nome, decimal x, decimal y)
     {
         Codigo = codigo;
         Nome = nome;
@@ -45,8 +45,8 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
 
             Codigo = linha.Substring(iniCodigo, tamCodigo);
             Nome = linha.Substring(iniNome, tamNome);
-            X = float.Parse(linha.Substring(iniX, tamX));
-            Y = float.Parse(linha.Substring(iniY));
+            X = decimal.Parse(linha.Substring(iniX, tamX));
+            Y = decimal.Parse(linha.Substring(iniY));
 
             return this; // retorna o próprio objeto Contato, com os dados
         }

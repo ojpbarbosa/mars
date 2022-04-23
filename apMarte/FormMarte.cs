@@ -44,10 +44,10 @@ namespace apMarte
             {
                 codigoCidadeTextBox.Text = cidade.Codigo;
                 nomeCidadeTextBox.Text = cidade.Nome;
-                xNumericUpDown.Value = (decimal)cidade.X;
-                yNumericUpDown.Value = (decimal)cidade.Y;
+                xNumericUpDown.Value = cidade.X;
+                yNumericUpDown.Value = cidade.Y;
 
-                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                // cidadesListBox.SetSelected(lista.PosicaoAtual, true);
             }
 
             else
@@ -69,10 +69,10 @@ namespace apMarte
             {
                 codigoCidadeTextBox.Text = cidade.Codigo;
                 nomeCidadeTextBox.Text = cidade.Nome;
-                xNumericUpDown.Value = (decimal)cidade.X;
-                yNumericUpDown.Value = (decimal)cidade.Y;
+                xNumericUpDown.Value = cidade.X;
+                yNumericUpDown.Value = cidade.Y;
 
-                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                // cidadesListBox.SetSelected(lista.PosicaoAtual, true);
             }
 
             else
@@ -86,26 +86,23 @@ namespace apMarte
         
         private void anteriorButton_Click(object sender, EventArgs e)
         {
-            if (lista.PosicaoAtual - 1 < 0) // Se o index for menor que zero, significa que cidade é null
+            lista.RetrocederPosicao();
+
+            Cidade cidade = lista.DadoAtual();
+
+            if (cidade == null)
             {
-                codigoCidadeTextBox.Text = "";
-                nomeCidadeTextBox.Text = "";
-                xNumericUpDown.Value = 0;
-                yNumericUpDown.Value = 0;
+                lista.PosicionarNoPrimeiro();
+
+                cidade = lista.DadoAtual();
             }
 
-            else
-            {
-                lista.PosicionarEm(lista.PosicaoAtual - 1);
-                Cidade cidade = lista.DadoAtual();
+            codigoCidadeTextBox.Text = cidade.Codigo;
+            nomeCidadeTextBox.Text = cidade.Nome;
+            xNumericUpDown.Value = cidade.X;
+            yNumericUpDown.Value = cidade.Y;
 
-                codigoCidadeTextBox.Text = cidade.Codigo;
-                nomeCidadeTextBox.Text = cidade.Nome;
-                xNumericUpDown.Value = (decimal)cidade.X;
-                yNumericUpDown.Value = (decimal)cidade.Y;
-
-                cidadesListBox.SelectedIndex = lista.PosicaoAtual;
-            }
+            // cidadesListBox.SetSelected(lista.PosicaoAtual, true);
         }
 
         private void proximoButton_Click(object sender, EventArgs e)
@@ -114,23 +111,19 @@ namespace apMarte
 
             Cidade cidade = lista.DadoAtual();
 
-            if (cidade != null)
+            if (cidade == null)
             {
-                codigoCidadeTextBox.Text = cidade.Codigo;
-                nomeCidadeTextBox.Text = cidade.Nome;
-                xNumericUpDown.Value = (decimal)cidade.X;
-                yNumericUpDown.Value = (decimal)cidade.Y;
+                lista.PosicionarNoPrimeiro();
 
-                cidadesListBox.SelectedIndex = lista.PosicaoAtual;
+                cidade = lista.DadoAtual();
             }
-            
-            else
-            {
-                codigoCidadeTextBox.Text = "";
-                nomeCidadeTextBox.Text = "";
-                xNumericUpDown.Value = 0;
-                yNumericUpDown.Value = 0;
-            }
+
+            codigoCidadeTextBox.Text = cidade.Codigo;
+            nomeCidadeTextBox.Text = cidade.Nome;
+            xNumericUpDown.Value = cidade.X;
+            yNumericUpDown.Value = cidade.Y;
+
+            // cidadesListBox.SetSelected(lista.PosicaoAtual, true);
         }
 
         private void procurarButton_Click(object sender, EventArgs e)
@@ -138,13 +131,13 @@ namespace apMarte
             Cidade cidadeASerProcurada = new Cidade(
                 codigoCidadeTextBox.Text,
                 nomeCidadeTextBox.Text,
-                (float)xNumericUpDown.Value,
-                (float)yNumericUpDown.Value
+                xNumericUpDown.Value,
+                yNumericUpDown.Value
             );
 
             if (lista.Existe(cidadeASerProcurada, out int ondeEsta))
             {
-                cidadesListBox.SelectedIndex = ondeEsta; // Foca o elemento procurado no listBox
+                // cidadesListBox.SetSelected(ondeEsta, true); // Foca o elemento procurado no listBox
             }
         }
 
@@ -153,11 +146,11 @@ namespace apMarte
             Cidade cidadeASerExcluida = new Cidade(
                 codigoCidadeTextBox.Text,
                 nomeCidadeTextBox.Text,
-                (float)xNumericUpDown.Value,
-                (float)yNumericUpDown.Value
+                xNumericUpDown.Value,
+                yNumericUpDown.Value
             );
 
-            if (lista.Existe(cidadeASerExcluida, out int ondeEsta))
+            if (lista.Existe(cidadeASerExcluida, out _))
             {
                 lista.Excluir(cidadeASerExcluida);
                 lista.ExibirDados(cidadesListBox);
