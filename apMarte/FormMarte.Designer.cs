@@ -173,6 +173,7 @@
             this.proximoButton.Size = new System.Drawing.Size(56, 39);
             this.proximoButton.Text = "Próximo";
             this.proximoButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.proximoButton.Click += new System.EventHandler(this.proximoButton_Click);
             // 
             // ultimoButton
             // 
@@ -197,6 +198,7 @@
             this.procurarButton.Size = new System.Drawing.Size(56, 39);
             this.procurarButton.Text = "Procurar";
             this.procurarButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.procurarButton.Click += new System.EventHandler(this.procurarButton_Click);
             // 
             // toolStripSeparator3
             // 

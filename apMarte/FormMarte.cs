@@ -86,7 +86,7 @@ namespace apMarte
         
         private void anteriorButton_Click(object sender, EventArgs e)
         {
-            if (lista.PosicaoAtual - 1 < 0)
+            if (lista.PosicaoAtual - 1 < 0) // Se o index for menor que zero, significa que cidade é null
             {
                 codigoCidadeTextBox.Text = "";
                 nomeCidadeTextBox.Text = "";
@@ -103,6 +103,48 @@ namespace apMarte
                 nomeCidadeTextBox.Text = cidade.Nome;
                 xNumericUpDown.Value = (decimal)cidade.X;
                 yNumericUpDown.Value = (decimal)cidade.Y;
+
+                cidadesListBox.SelectedIndex = lista.PosicaoAtual;
+            }
+        }
+
+        private void proximoButton_Click(object sender, EventArgs e)
+        {
+            lista.AvancarPosicao();
+
+            Cidade cidade = lista.DadoAtual();
+
+            if (cidade != null)
+            {
+                codigoCidadeTextBox.Text = cidade.Codigo;
+                nomeCidadeTextBox.Text = cidade.Nome;
+                xNumericUpDown.Value = (decimal)cidade.X;
+                yNumericUpDown.Value = (decimal)cidade.Y;
+
+                cidadesListBox.SelectedIndex = lista.PosicaoAtual;
+            }
+            
+            else
+            {
+                codigoCidadeTextBox.Text = "";
+                nomeCidadeTextBox.Text = "";
+                xNumericUpDown.Value = 0;
+                yNumericUpDown.Value = 0;
+            }
+        }
+
+        private void procurarButton_Click(object sender, EventArgs e)
+        {
+            Cidade cidadeASerProcurada = new Cidade(
+                codigoCidadeTextBox.Text,
+                nomeCidadeTextBox.Text,
+                (float)xNumericUpDown.Value,
+                (float)yNumericUpDown.Value
+            );
+
+            if (lista.Existe(cidadeASerProcurada, out int ondeEsta))
+            {
+                cidadesListBox.SelectedIndex = ondeEsta; // Foca o elemento procurado no listBox
             }
         }
     }

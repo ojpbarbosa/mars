@@ -164,17 +164,7 @@ class ListaDupla<Dado> : IDados<Dado>
 
                 else
                 {
-                    if (procurado.CompareTo(atual.Prox.Info) < 0 || procurado.CompareTo(DadoAtual()) > 0)
-                    {
-                        // Pociosionar atual aqui(???). Retornar ondeEsta(????) 
-                        fim = true;
-                    }
-
-                    else
-                    {
-                        AvancarPosicao();
-                        ondeEsta++;
-                    }
+                    AvancarPosicao();
                 }
             }
         }
