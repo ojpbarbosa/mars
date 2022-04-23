@@ -231,6 +231,7 @@
             this.salvarButton.Size = new System.Drawing.Size(42, 39);
             this.salvarButton.Text = "Salvar";
             this.salvarButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.salvarButton.Click += new System.EventHandler(this.salvarButton_Click);
             // 
             // toolStripSeparator2
             // 
@@ -245,6 +246,7 @@
             this.excluirButton.Size = new System.Drawing.Size(46, 39);
             this.excluirButton.Text = "Excluir";
             this.excluirButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.excluirButton.Click += new System.EventHandler(this.excluirButton_Click);
             // 
             // toolStripSeparator5
             // 

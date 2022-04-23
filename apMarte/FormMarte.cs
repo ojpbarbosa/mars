@@ -147,5 +147,26 @@ namespace apMarte
                 cidadesListBox.SelectedIndex = ondeEsta; // Foca o elemento procurado no listBox
             }
         }
+
+        private void excluirButton_Click(object sender, EventArgs e)
+        {
+            Cidade cidadeASerExcluida = new Cidade(
+                codigoCidadeTextBox.Text,
+                nomeCidadeTextBox.Text,
+                (float)xNumericUpDown.Value,
+                (float)yNumericUpDown.Value
+            );
+
+            if (lista.Existe(cidadeASerExcluida, out int ondeEsta))
+            {
+                lista.Excluir(cidadeASerExcluida);
+                lista.ExibirDados(cidadesListBox);
+            }
+        }
+
+        private void salvarButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
