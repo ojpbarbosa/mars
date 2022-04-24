@@ -164,6 +164,8 @@ class ListaDupla<Dado> : IDados<Dado>
 
                 else
                 {
+                    ondeEsta++;
+
                     AvancarPosicao();
                 }
             }
