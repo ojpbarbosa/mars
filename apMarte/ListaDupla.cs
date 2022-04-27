@@ -50,6 +50,8 @@ class ListaDupla<Dado> : IDados<Dado>
             {
                 Incluir(new Dado().LerRegistro(arquivo));
             }
+
+            arquivo.Close();
         }
     }
 
@@ -69,6 +71,8 @@ class ListaDupla<Dado> : IDados<Dado>
 
                 AvancarPosicao();
             }
+
+            arquivo.Close();
         }
     }
 
@@ -100,11 +104,11 @@ class ListaDupla<Dado> : IDados<Dado>
 
     public void PosicionarEm(int posicaoDesejada)
     {
-        PosicionarNoPrimeiro(); // o atual é posicionado no primeiro nó
-
-        for (int i = 0; i < posicaoDesejada; i++) // enquanto i for menor que a posi
+        if (posicaoDesejada < quantosNos)
         {
-            if (atual != null)
+            PosicionarNoPrimeiro(); // o atual é posicionado no primeiro nó
+
+            for (int i = 0; i < posicaoDesejada; i++) // enquanto i for menor que a posi
             {
                 AvancarPosicao();
             }
@@ -315,7 +319,7 @@ class ListaDupla<Dado> : IDados<Dado>
             return false;
         }
 
-        if (!Existe(novoValor, out int ondeEsta))
+        if (!Existe(novoValor, out _))
         {
             PosicionarEm(posicaoDeInclusao);
 
@@ -337,17 +341,23 @@ class ListaDupla<Dado> : IDados<Dado>
     {
         get
         {
-            PosicionarEm(indice);
+            if (indice < quantosNos)
+            {
+                PosicionarEm(indice);
 
-            return DadoAtual();
+                return DadoAtual();
+            }
+
+            return default;
         }
         set
         {
-            PosicionarEm(indice);
+            if (indice < quantosNos)
+            {
+                PosicionarEm(indice);
 
-            atual.Info = value;
-
-            situacaoAtual = Situacao.editando;
+                atual.Info = value;
+            }
         }
     }
     
