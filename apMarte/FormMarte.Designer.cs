@@ -261,6 +261,7 @@
             this.sairButton.Size = new System.Drawing.Size(30, 39);
             this.sairButton.Text = "Sair";
             this.sairButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.sairButton.Click += new System.EventHandler(this.sairButton_Click);
             // 
             // cidadesGroupBox
             // 
@@ -292,6 +293,7 @@
             this.cidadesListBox.Name = "cidadesListBox";
             this.cidadesListBox.Size = new System.Drawing.Size(309, 212);
             this.cidadesListBox.TabIndex = 16;
+            this.cidadesListBox.SelectedIndexChanged += new System.EventHandler(this.cidadesListBox_SelectedIndexChanged);
             // 
             // yNumericUpDown
             // 
@@ -547,6 +549,7 @@
             this.mapaPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.mapaPictureBox.TabIndex = 10;
             this.mapaPictureBox.TabStop = false;
+            this.mapaPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.mapaPictureBox_Paint);
             // 
             // FormMarte
             // 
@@ -562,7 +565,8 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MinimumSize = new System.Drawing.Size(640, 360);
             this.Name = "FormMarte";
-            this.Text = "Cidades de Marte";
+            this.Text = "    ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMarte_FormClosing);
             this.Load += new System.EventHandler(this.FormMarte_Load);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();

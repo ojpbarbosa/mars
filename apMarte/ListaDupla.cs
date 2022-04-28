@@ -17,23 +17,20 @@ class ListaDupla<Dado> : IDados<Dado>
 
     public Situacao SituacaoAtual { get => situacaoAtual; set => situacaoAtual = value; }
     public int PosicaoAtual { 
-        get 
-        { 
+        get
+        {
             if (Existe(DadoAtual(), out int posicao))
             {
                 return posicao;
             }
 
-            else
-            {
-                return -1;
-            }
+            return -1;
         }
         set => PosicionarEm(value); 
     }
     public bool EstaNoInicio { get => atual == primeiro; }
     public bool EstaNoFim { get => atual == ultimo; }
-    public bool EstaVazio { get => quantosNos == 0; }          // (bool) Verificar se está vazia
+    public bool EstaVazio { get => quantosNos == 0; } // (bool) Verificar se está vazia
     public int Tamanho { get => quantosNos; }
     public NoDuplo<Dado> Primeiro { get => primeiro; }
     public NoDuplo<Dado> Ultimo { get => ultimo; }
@@ -65,7 +62,7 @@ class ListaDupla<Dado> : IDados<Dado>
 
             PosicionarNoPrimeiro();
 
-            while (!EstaNoFim)
+            while (atual != null)
             {
                 DadoAtual().GravarRegistro(arquivo);
 
@@ -104,7 +101,7 @@ class ListaDupla<Dado> : IDados<Dado>
 
     public void PosicionarEm(int posicaoDesejada)
     {
-        if (posicaoDesejada < quantosNos)
+        if (posicaoDesejada < quantosNos) 
         {
             PosicionarNoPrimeiro(); // o atual é posicionado no primeiro nó
 
@@ -115,10 +112,6 @@ class ListaDupla<Dado> : IDados<Dado>
         }
     }
 
-    // (bool) Pesquisar Dado procurado em ordem crescente; a pesquisa
-    // posicionará o ponteiro atual no nó procurado quando este
-    // or encontrado ou, se não achar, no nó seguinte a local
-    // onde deveria estar o nó procurado
     public bool Existe(Dado procurado, out int ondeEsta)
     {
         situacaoAtual = Situacao.pesquisando;
@@ -180,20 +173,35 @@ class ListaDupla<Dado> : IDados<Dado>
 
     public bool Excluir(Dado dadoAExcluir)
     {
-
         if (dadoAExcluir == null)
         {
             return false;
         }
 
-        if (Existe(dadoAExcluir, out int ondeEsta))
+        if (Existe(dadoAExcluir, out _))
         {
             situacaoAtual = Situacao.excluindo;
-            
-            PosicionarEm(ondeEsta); // PosicaoAtual = ondeEsta;
 
-            atual.Ant.Prox = atual.Prox;
-            atual.Prox.Ant = atual.Ant;
+            if (atual == primeiro) // se atual for o primeiro nó
+            {
+                primeiro = atual.Prox; // o primeiro nó passa a ser o próximo nó
+            }
+
+            else // senão
+            {
+                atual.Ant.Prox = atual.Prox; // o próximo nó do nó anterior ao atual recebe o próximo nó do atual
+
+                if (atual == ultimo) // se atual for o último nó
+                {
+                    ultimo = atual.Ant; // o último nó passa a ser o anterior ao atual
+                }
+
+                else // senão
+                {
+                    atual.Prox.Ant = atual.Ant; // o nó anterior ao próximo nó do atual recebe o nó anterior ao atual
+                }
+            }
+
             quantosNos--;
 
             AvancarPosicao();
@@ -278,27 +286,24 @@ class ListaDupla<Dado> : IDados<Dado>
 
             else
             {
-                if (atual == null && primeiro != null) // se dado for menor que primeiro
+                if (novoValor.CompareTo(primeiro.Info) < 0) // se dado for menor que primeiro
                 {
                     IncluirNoInicio(novoValor); // o dado é inserido no início
                 }
 
-                else if (atual == ultimo) // se atual foi posicionado no último
+                else if (atual == null || atual == ultimo) // se o atual for nulo (fora da lista) ou atual é o último
                 {
                     IncluirAposFim(novoValor); // o dado é inserido após o fim
                 }
-
+                
                 else // caso contrário
                 {
-                    NoDuplo<Dado> novoNo = new NoDuplo<Dado>(novoValor)
-                    {
+                    NoDuplo<Dado> novoNo = new NoDuplo<Dado>(novoValor);
 
-                        // o dado é inserido na sua posição correspondente
-                        Prox = atual.Prox
-                    };
-                    novoNo.Prox.Ant = novoNo;
                     atual.Prox = novoNo;
                     novoNo.Ant = atual;
+                    atual.Prox.Ant = novoNo;
+                    atual = novoNo;
 
                     quantosNos++;
                 }

@@ -48,7 +48,7 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
             X = decimal.Parse(linha.Substring(iniX, tamX));
             Y = decimal.Parse(linha.Substring(iniY));
 
-            return this; // retorna o próprio objeto Contato, com os dados
+            return this; // retorna o próprio objeto Cidade, com os dados
         }
 
         return default;

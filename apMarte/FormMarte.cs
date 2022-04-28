@@ -128,38 +128,90 @@ namespace apMarte
 
         private void procurarButton_Click(object sender, EventArgs e)
         {
-            Cidade cidadeASerProcurada = new Cidade(
-                codigoCidadeTextBox.Text,
-                nomeCidadeTextBox.Text,
-                xNumericUpDown.Value,
-                yNumericUpDown.Value
-            );
-
-            if (lista.Existe(cidadeASerProcurada, out int ondeEsta))
+            if (codigoCidadeTextBox.Text == "")
             {
-                // cidadesListBox.SetSelected(ondeEsta, true); // Foca o elemento procurado no listBox
+                MessageBox.Show("Código de cidade inválido!");
+            }
+
+            else
+            {
+                Cidade cidadeASerProcurada = new Cidade(
+                    codigoCidadeTextBox.Text,
+                    nomeCidadeTextBox.Text,
+                    xNumericUpDown.Value,
+                    yNumericUpDown.Value
+                );
+
+                if (lista.Existe(cidadeASerProcurada, out int ondeEsta))
+                {
+                    // cidadesListBox.SetSelected(ondeEsta, true); // Foca o elemento procurado no listBox
+                }
             }
         }
 
         private void excluirButton_Click(object sender, EventArgs e)
         {
-            Cidade cidadeASerExcluida = new Cidade(
-                codigoCidadeTextBox.Text,
-                nomeCidadeTextBox.Text,
-                xNumericUpDown.Value,
-                yNumericUpDown.Value
-            );
-
-            if (lista.Existe(cidadeASerExcluida, out _))
+            if (codigoCidadeTextBox.Text == "")
             {
+                MessageBox.Show("Código de cidade inválido!");
+            }
+
+            else
+            {
+                Cidade cidadeASerExcluida = new Cidade(
+                    codigoCidadeTextBox.Text,
+                    nomeCidadeTextBox.Text,
+                    xNumericUpDown.Value,
+                    yNumericUpDown.Value
+                );
+
                 lista.Excluir(cidadeASerExcluida);
                 lista.ExibirDados(cidadesListBox);
+
+                // cidadesListBox.SetSelected(lista.PosicaoAtual, true);
             }
         }
 
         private void salvarButton_Click(object sender, EventArgs e)
         {
+            if (openFileDialog.FileName != "")
+            {
+                lista.GravarDados(openFileDialog.FileName);
+            }
+        }
 
+        private void sairButton_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog.FileName != "")
+            {
+                lista.GravarDados(openFileDialog.FileName);
+            }
+
+            Close();
+        }
+
+        private void cidadesListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lista.PosicionarEm(cidadesListBox.SelectedIndex);
+
+            Cidade cidadeSelecionada = lista.DadoAtual();
+
+            codigoCidadeTextBox.Text = cidadeSelecionada.Codigo;
+            nomeCidadeTextBox.Text = cidadeSelecionada.Nome;
+            xNumericUpDown.Value = cidadeSelecionada.X;
+            yNumericUpDown.Value = cidadeSelecionada.Y;
+        }
+
+        private void mapaPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+        }
+
+        private void FormMarte_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (openFileDialog.FileName != "")
+            {
+                lista.GravarDados(openFileDialog.FileName);
+            }
         }
     }
 }
