@@ -159,6 +159,11 @@ class ListaDupla<Dado> : IDados<Dado>
                     achou = true;
                 }
 
+                else if (DadoAtual().CompareTo(procurado) > 0)
+                {
+                    fim = true;
+                }
+
                 else
                 {
                     ondeEsta++;
@@ -277,7 +282,7 @@ class ListaDupla<Dado> : IDados<Dado>
             return false;
         }
 
-        if (!Existe(novoValor, out _))
+        if (!Existe(novoValor, out int ondeEsta))
         {
             if (EstaVazio) // se a lista está vazia
             {
@@ -286,23 +291,24 @@ class ListaDupla<Dado> : IDados<Dado>
 
             else
             {
-                if (novoValor.CompareTo(primeiro.Info) < 0) // se dado for menor que primeiro
+                if (EstaNoInicio && ondeEsta == -1) // se dado for menor que primeiro
                 {
                     IncluirNoInicio(novoValor); // o dado é inserido no início
                 }
 
-                else if (atual == null || atual == ultimo) // se o atual for nulo (fora da lista) ou atual é o último
+                else if (EstaNoFim && ondeEsta == -1) // se for maior que último
                 {
                     IncluirAposFim(novoValor); // o dado é inserido após o fim
                 }
-                
+
                 else // caso contrário
                 {
                     NoDuplo<Dado> novoNo = new NoDuplo<Dado>(novoValor);
 
-                    atual.Prox = novoNo;
-                    novoNo.Ant = atual;
-                    atual.Prox.Ant = novoNo;
+                    novoNo.Ant = atual.Ant;
+                    novoNo.Ant.Prox = novoNo;
+                    novoNo.Prox = atual;
+                    atual.Ant = novoNo;
                     atual = novoNo;
 
                     quantosNos++;
