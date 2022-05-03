@@ -50,7 +50,7 @@ namespace apMarte
 
             else
             {
-                PopularCampos(new Cidade("", "", 0, 0));
+                LimparCampos();
             }
         }
 
@@ -87,10 +87,19 @@ namespace apMarte
                 cidade = lista.DadoAtual();
             }
 
-            PopularCampos(cidade);
 
-            cidadesListBox.SetSelected(lista.PosicaoAtual, true);
-            mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+            if (cidade != null)
+            {
+                PopularCampos(cidade);
+
+                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+            }
+
+            else
+            {
+                LimparCampos();
+            }
         }
 
         private void proximoButton_Click(object sender, EventArgs e)
@@ -106,10 +115,18 @@ namespace apMarte
                 cidade = lista.DadoAtual();
             }
 
-            PopularCampos(cidade);
+            if (cidade != null)
+            {
+                PopularCampos(cidade);
 
-            cidadesListBox.SetSelected(lista.PosicaoAtual, true);
-            mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+            }
+
+            else
+            {
+                LimparCampos();
+            }
         }
 
         private void procurarButton_Click(object sender, EventArgs e) // repensar lógica
@@ -126,12 +143,18 @@ namespace apMarte
                     nomeCidadeTextBox.Text.PadRight(15, ' '),
                     xNumericUpDown.Value,
                     yNumericUpDown.Value
-                ); ;
+                );
 
                 if (lista.Existe(cidadeASerProcurada, out int ondeEsta))
                 {
                     cidadesListBox.SetSelected(ondeEsta, true); // Foca o elemento procurado no listBox
                     mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                }
+
+                else
+                {
+                    LimparCampos();
+                    mensagemStatusLabel.Text = "Registro inexistente!";
                 }
             }
         }
@@ -212,20 +235,18 @@ namespace apMarte
 
                 if (!lista.Existe(cidadeASerCriada, out _))
                 {
-                    lista.Incluir(cidadeASerCriada);
-
-                    int onde = lista.PosicaoAtual;
-
-                    cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
+                    if (lista.Incluir(cidadeASerCriada))
+                    {
+                        cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
                         proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
                             novoButton.Enabled = excluirButton.Enabled = sairButton.Enabled = true; // ativa o list box e os botões
 
-                    cancelarButton.Enabled = salvarButton.Enabled = false;
+                        cancelarButton.Enabled = salvarButton.Enabled = false;
 
-                    lista.ExibirDados(cidadesListBox);
+                        lista.ExibirDados(cidadesListBox);
 
-                    cidadesListBox.SetSelected(onde, true);
-                    mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                        mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                    }
                 }
 
                 else

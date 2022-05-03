@@ -176,7 +176,7 @@ class ListaDupla<Dado> : IDados<Dado>
         return achou;
     }
 
-    public bool Excluir(Dado dadoAExcluir)
+    public bool Excluir(Dado dadoAExcluir) // TODO: verificar execução com último nó e relação dos botões de navegação
     {
         if (dadoAExcluir == null)
         {
@@ -187,7 +187,7 @@ class ListaDupla<Dado> : IDados<Dado>
         {
             situacaoAtual = Situacao.excluindo;
 
-            if (atual == primeiro) // se atual for o primeiro nó
+            if (EstaNoInicio) // se atual for o primeiro nó
             {
                 primeiro = atual.Prox; // o primeiro nó passa a ser o próximo nó
             }
@@ -196,7 +196,7 @@ class ListaDupla<Dado> : IDados<Dado>
             {
                 atual.Ant.Prox = atual.Prox; // o próximo nó do nó anterior ao atual recebe o próximo nó do atual
 
-                if (atual == ultimo) // se atual for o último nó
+                if (EstaNoFim)
                 {
                     ultimo = atual.Ant; // o último nó passa a ser o anterior ao atual
                 }

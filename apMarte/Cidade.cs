@@ -64,7 +64,7 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
 
     public string ParaArquivo()
     {
-        return Codigo + Nome + X.ToString() + Y.ToString();
+        return Codigo + Nome + X.ToString("0.00000") + Y.ToString("0.00000");
     }
 
     public override string ToString()
