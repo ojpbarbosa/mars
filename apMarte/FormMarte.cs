@@ -167,8 +167,10 @@ namespace apMarte
         private void novoButton_Click(object sender, EventArgs e)
         {
             cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
-                proximoButton.Enabled = ultimoButton.Enabled =
-                procurarButton.Enabled = excluirButton.Enabled = sairButton.Enabled = false; // desativa o list box e os botões
+                proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
+                    novoButton.Enabled = excluirButton.Enabled = sairButton.Enabled = false; // desativa o list box e os botões
+
+            cancelarButton.Enabled = salvarButton.Enabled = true;
 
             LimparCampos(); // limpa os campos
 
@@ -178,8 +180,10 @@ namespace apMarte
         private void cancelarButton_Click(object sender, EventArgs e)
         {
             cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
-                proximoButton.Enabled = ultimoButton.Enabled =
-                procurarButton.Enabled = excluirButton.Enabled = sairButton.Enabled = true; // ativa o list box e os botões
+                    proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
+                        novoButton.Enabled = excluirButton.Enabled = sairButton.Enabled = true; // ativa o list box e os botões
+
+            cancelarButton.Enabled = salvarButton.Enabled = false;
 
             LimparCampos(); // limpa os campos
 
@@ -199,21 +203,34 @@ namespace apMarte
 
             else
             {
-                Cidade cidadeASerExcluida = new Cidade(
+                Cidade cidadeASerCriada = new Cidade(
                     codigoCidadeTextBox.Text.PadLeft(3, ' '),
                     nomeCidadeTextBox.Text.PadRight(15, ' '),
                     xNumericUpDown.Value,
                     yNumericUpDown.Value
                 );
 
-                lista.Excluir(cidadeASerExcluida);
-                lista.ExibirDados(cidadesListBox);
-                lista.PosicionarNoPrimeiro();
-
-                if (lista.PosicaoAtual != -1)
+                if (!lista.Existe(cidadeASerCriada, out _))
                 {
-                    cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                    lista.Incluir(cidadeASerCriada);
+
+                    int onde = lista.PosicaoAtual;
+
+                    cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
+                        proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
+                            novoButton.Enabled = excluirButton.Enabled = sairButton.Enabled = true; // ativa o list box e os botões
+
+                    cancelarButton.Enabled = salvarButton.Enabled = false;
+
+                    lista.ExibirDados(cidadesListBox);
+
+                    cidadesListBox.SetSelected(onde, true);
                     mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                }
+
+                else
+                {
+                    MessageBox.Show($"Cidade com código {cidadeASerCriada.Codigo} já existente!");
                 }
             }
         }

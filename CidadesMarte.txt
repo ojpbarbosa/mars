@@ -21,3 +21,6 @@
  20Temperan�a     0,513430,67822
  21Tharsis        0,129640,39502
  22Underhill      0,378910,51318
+ 23Karana         0,123980,21732
+ 25Gabriellium    0,152320,12474
+ 30Joanesium      0,123120,12839
