@@ -1,6 +1,6 @@
   0Acheron        0,113530,28857
-  2Arrakeen       0,052980,48682
   1Arena          0,687260,29248
+  2Arrakeen       0,052980,48682
   3Bakhuysen      0,674560,52002
   4Bradbury       0,407470,74365
   5Burroughs      0,712650,37939

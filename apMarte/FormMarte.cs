@@ -22,7 +22,7 @@ namespace apMarte
                 if (item is ToolStripButton)
                 {
                     (item as ToolStripButton).ImageIndex = indice++;
-                }     
+                }
             }
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -42,20 +42,14 @@ namespace apMarte
 
             if (cidade != null)
             {
-                codigoCidadeTextBox.Text = cidade.Codigo;
-                nomeCidadeTextBox.Text = cidade.Nome;
-                xNumericUpDown.Value = cidade.X;
-                yNumericUpDown.Value = cidade.Y;
+                PopularCampos(cidade);
 
-                // cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
             }
 
             else
             {
-                codigoCidadeTextBox.Text = "";
-                nomeCidadeTextBox.Text = "";
-                xNumericUpDown.Value = 0;
-                yNumericUpDown.Value = 0;
+                PopularCampos(new Cidade("", "", 0, 0));
             }
         }
 
@@ -67,23 +61,17 @@ namespace apMarte
 
             if (cidade != null)
             {
-                codigoCidadeTextBox.Text = cidade.Codigo;
-                nomeCidadeTextBox.Text = cidade.Nome;
-                xNumericUpDown.Value = cidade.X;
-                yNumericUpDown.Value = cidade.Y;
+                PopularCampos(cidade);
 
-                // cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
             }
 
             else
             {
-                codigoCidadeTextBox.Text = "";
-                nomeCidadeTextBox.Text = "";
-                xNumericUpDown.Value = 0;
-                yNumericUpDown.Value = 0;
+                PopularCampos(new Cidade("", "", 0, 0));
             }
         }
-        
+
         private void anteriorButton_Click(object sender, EventArgs e)
         {
             lista.RetrocederPosicao();
@@ -92,17 +80,14 @@ namespace apMarte
 
             if (cidade == null)
             {
-                lista.PosicionarNoPrimeiro();
+                lista.PosicionarNoUltimo();
 
                 cidade = lista.DadoAtual();
             }
 
-            codigoCidadeTextBox.Text = cidade.Codigo;
-            nomeCidadeTextBox.Text = cidade.Nome;
-            xNumericUpDown.Value = cidade.X;
-            yNumericUpDown.Value = cidade.Y;
+            PopularCampos(cidade);
 
-            // cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+            cidadesListBox.SetSelected(lista.PosicaoAtual, true);
         }
 
         private void proximoButton_Click(object sender, EventArgs e)
@@ -118,12 +103,9 @@ namespace apMarte
                 cidade = lista.DadoAtual();
             }
 
-            codigoCidadeTextBox.Text = cidade.Codigo;
-            nomeCidadeTextBox.Text = cidade.Nome;
-            xNumericUpDown.Value = cidade.X;
-            yNumericUpDown.Value = cidade.Y;
+            PopularCampos(cidade);
 
-            // cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+            cidadesListBox.SetSelected(lista.PosicaoAtual, true);
         }
 
         private void procurarButton_Click(object sender, EventArgs e)
@@ -144,7 +126,7 @@ namespace apMarte
 
                 if (lista.Existe(cidadeASerProcurada, out int ondeEsta))
                 {
-                    // cidadesListBox.SetSelected(ondeEsta, true); // Foca o elemento procurado no listBox
+                    cidadesListBox.SetSelected(ondeEsta, true); // Foca o elemento procurado no listBox
                 }
             }
         }
@@ -167,8 +149,12 @@ namespace apMarte
 
                 lista.Excluir(cidadeASerExcluida);
                 lista.ExibirDados(cidadesListBox);
+                lista.PosicionarNoPrimeiro();
 
-                // cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                if (lista.PosicaoAtual != -1)
+                {
+                    cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                }
             }
         }
 
@@ -192,14 +178,14 @@ namespace apMarte
 
         private void cidadesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lista.PosicionarEm(cidadesListBox.SelectedIndex);
+            if (lista.Tamanho > 0)
+            {
+                lista.PosicionarEm(cidadesListBox.SelectedIndex);
 
-            Cidade cidadeSelecionada = lista.DadoAtual();
-
-            codigoCidadeTextBox.Text = cidadeSelecionada.Codigo;
-            nomeCidadeTextBox.Text = cidadeSelecionada.Nome;
-            xNumericUpDown.Value = cidadeSelecionada.X;
-            yNumericUpDown.Value = cidadeSelecionada.Y;
+                Cidade cidadeSelecionada = lista.DadoAtual();
+                
+                PopularCampos(cidadeSelecionada);
+            }
         }
 
         private void mapaPictureBox_Paint(object sender, PaintEventArgs e)
@@ -212,6 +198,14 @@ namespace apMarte
             {
                 lista.GravarDados(openFileDialog.FileName);
             }
+        }
+
+        private void PopularCampos(Cidade cidade)
+        {
+            codigoCidadeTextBox.Text = cidade.Codigo;
+            nomeCidadeTextBox.Text = cidade.Nome;
+            xNumericUpDown.Value = cidade.X;
+            yNumericUpDown.Value = cidade.Y;
         }
     }
 }

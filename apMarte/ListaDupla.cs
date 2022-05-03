@@ -291,14 +291,14 @@ class ListaDupla<Dado> : IDados<Dado>
 
             else
             {
-                if (EstaNoInicio && ondeEsta == -1) // se dado for menor que primeiro
-                {
-                    IncluirNoInicio(novoValor); // o dado é inserido no início
-                }
-
-                else if (EstaNoFim && ondeEsta == -1) // se for maior que último
+                if (EstaNoFim && ondeEsta == -1) // se for maior que último
                 {
                     IncluirAposFim(novoValor); // o dado é inserido após o fim
+                }
+
+                else if (EstaNoInicio && ondeEsta == -1) // se dado for menor que primeiro
+                {
+                    IncluirNoInicio(novoValor); // o dado é inserido no início
                 }
 
                 else // caso contrário
