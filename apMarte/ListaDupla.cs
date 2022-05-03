@@ -273,7 +273,7 @@ class ListaDupla<Dado> : IDados<Dado>
         return true;
     }
 
-    public bool Incluir(Dado novoValor)         // (bool) Inserir nó com Dado em ordem crescente
+    public bool Incluir(Dado novoValor)
     {
         situacaoAtual = Situacao.incluindo;
 
@@ -336,8 +336,8 @@ class ListaDupla<Dado> : IDados<Dado>
 
             NoDuplo<Dado> novoNo = new NoDuplo<Dado>(novoValor);
 
-            atual.Ant.Prox = novoNo;
             novoNo.Ant = atual.Ant;
+            novoNo.Ant.Prox = novoNo;
             novoNo.Prox = atual;
             atual.Ant = novoNo;
             atual = novoNo;

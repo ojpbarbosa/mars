@@ -45,6 +45,7 @@ namespace apMarte
                 PopularCampos(cidade);
 
                 cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
             }
 
             else
@@ -64,11 +65,12 @@ namespace apMarte
                 PopularCampos(cidade);
 
                 cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
             }
 
             else
             {
-                PopularCampos(new Cidade("", "", 0, 0));
+                LimparCampos();
             }
         }
 
@@ -88,6 +90,7 @@ namespace apMarte
             PopularCampos(cidade);
 
             cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+            mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
         }
 
         private void proximoButton_Click(object sender, EventArgs e)
@@ -106,9 +109,10 @@ namespace apMarte
             PopularCampos(cidade);
 
             cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+            mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
         }
 
-        private void procurarButton_Click(object sender, EventArgs e)
+        private void procurarButton_Click(object sender, EventArgs e) // repensar lógica
         {
             if (codigoCidadeTextBox.Text == "")
             {
@@ -118,15 +122,16 @@ namespace apMarte
             else
             {
                 Cidade cidadeASerProcurada = new Cidade(
-                    codigoCidadeTextBox.Text,
-                    nomeCidadeTextBox.Text,
+                    codigoCidadeTextBox.Text.PadLeft(3, ' '),
+                    nomeCidadeTextBox.Text.PadRight(15, ' '),
                     xNumericUpDown.Value,
                     yNumericUpDown.Value
-                );
+                ); ;
 
                 if (lista.Existe(cidadeASerProcurada, out int ondeEsta))
                 {
                     cidadesListBox.SetSelected(ondeEsta, true); // Foca o elemento procurado no listBox
+                    mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
                 }
             }
         }
@@ -141,8 +146,8 @@ namespace apMarte
             else
             {
                 Cidade cidadeASerExcluida = new Cidade(
-                    codigoCidadeTextBox.Text,
-                    nomeCidadeTextBox.Text,
+                    codigoCidadeTextBox.Text.PadLeft(3, ' '),
+                    nomeCidadeTextBox.Text.PadRight(15, ' '),
                     xNumericUpDown.Value,
                     yNumericUpDown.Value
                 );
@@ -154,15 +159,62 @@ namespace apMarte
                 if (lista.PosicaoAtual != -1)
                 {
                     cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                    mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
                 }
             }
         }
 
+        private void novoButton_Click(object sender, EventArgs e)
+        {
+            cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
+                proximoButton.Enabled = ultimoButton.Enabled =
+                procurarButton.Enabled = excluirButton.Enabled = sairButton.Enabled = false; // desativa o list box e os botões
+
+            LimparCampos(); // limpa os campos
+
+            codigoCidadeTextBox.Focus();
+        }
+
+        private void cancelarButton_Click(object sender, EventArgs e)
+        {
+            cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
+                proximoButton.Enabled = ultimoButton.Enabled =
+                procurarButton.Enabled = excluirButton.Enabled = sairButton.Enabled = true; // ativa o list box e os botões
+
+            LimparCampos(); // limpa os campos
+
+            lista.PosicionarNoPrimeiro();
+            
+            cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+            mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+        }
+
         private void salvarButton_Click(object sender, EventArgs e)
         {
-            if (openFileDialog.FileName != "")
+            if (codigoCidadeTextBox.Text == "" || nomeCidadeTextBox.Text == "" ||
+                xNumericUpDown.Value == 0 || yNumericUpDown.Value == 0)
             {
-                lista.GravarDados(openFileDialog.FileName);
+                MessageBox.Show("Campos inválidos!");
+            }
+
+            else
+            {
+                Cidade cidadeASerExcluida = new Cidade(
+                    codigoCidadeTextBox.Text.PadLeft(3, ' '),
+                    nomeCidadeTextBox.Text.PadRight(15, ' '),
+                    xNumericUpDown.Value,
+                    yNumericUpDown.Value
+                );
+
+                lista.Excluir(cidadeASerExcluida);
+                lista.ExibirDados(cidadesListBox);
+                lista.PosicionarNoPrimeiro();
+
+                if (lista.PosicaoAtual != -1)
+                {
+                    cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                    mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                }
             }
         }
 
@@ -181,6 +233,7 @@ namespace apMarte
             if (lista.Tamanho > 0)
             {
                 lista.PosicionarEm(cidadesListBox.SelectedIndex);
+                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
 
                 Cidade cidadeSelecionada = lista.DadoAtual();
                 
@@ -206,6 +259,14 @@ namespace apMarte
             nomeCidadeTextBox.Text = cidade.Nome;
             xNumericUpDown.Value = cidade.X;
             yNumericUpDown.Value = cidade.Y;
+        }
+
+        private void LimparCampos()
+        {
+            codigoCidadeTextBox.Text = "";
+            nomeCidadeTextBox.Text = "";
+            xNumericUpDown.Value = 0;
+            yNumericUpDown.Value = 0;
         }
     }
 }

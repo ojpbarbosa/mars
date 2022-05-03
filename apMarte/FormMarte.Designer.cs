@@ -97,7 +97,6 @@
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(1370, 22);
             this.statusStrip.TabIndex = 1;
-            this.statusStrip.Text = "statusStrip1";
             // 
             // mensagemStatusLabel
             // 
@@ -213,18 +212,22 @@
             this.novoButton.Size = new System.Drawing.Size(40, 39);
             this.novoButton.Text = "Novo";
             this.novoButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.novoButton.Click += new System.EventHandler(this.novoButton_Click);
             // 
             // cancelarButton
             // 
+            this.cancelarButton.Enabled = false;
             this.cancelarButton.Image = ((System.Drawing.Image)(resources.GetObject("cancelarButton.Image")));
             this.cancelarButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cancelarButton.Name = "cancelarButton";
             this.cancelarButton.Size = new System.Drawing.Size(57, 39);
             this.cancelarButton.Text = "Cancelar";
             this.cancelarButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cancelarButton.Click += new System.EventHandler(this.cancelarButton_Click);
             // 
             // salvarButton
             // 
+            this.salvarButton.Enabled = false;
             this.salvarButton.Image = ((System.Drawing.Image)(resources.GetObject("salvarButton.Image")));
             this.salvarButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.salvarButton.Name = "salvarButton";
