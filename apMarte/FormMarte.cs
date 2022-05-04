@@ -31,6 +31,13 @@ namespace apMarte
 
                 lista.LerDados(openFileDialog.FileName);
                 lista.ExibirDados(cidadesListBox);
+                lista.PosicionarNoPrimeiro();
+
+                if (lista.Tamanho > 0)
+                {
+                    cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                    mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                }
             }
         }
 
@@ -251,7 +258,7 @@ namespace apMarte
 
                 else
                 {
-                    MessageBox.Show($"Cidade com código {cidadeASerCriada.Codigo} já existente!");
+                    MessageBox.Show($"Cidade com código {cidadeASerCriada.Codigo.Trim()} já existente!");
                 }
             }
         }
@@ -287,6 +294,7 @@ namespace apMarte
         {
             if (openFileDialog.FileName != "")
             {
+                // lista.Ordenar();
                 lista.GravarDados(openFileDialog.FileName);
             }
         }
