@@ -330,6 +330,11 @@ class ListaDupla<Dado> : IDados<Dado>
             return false;
         }
 
+        if (posicaoDeInclusao < 0 || posicaoDeInclusao > Tamanho + 1)
+        {
+            return false;
+        }
+
         if (!Existe(novoValor, out _))
         {
             PosicionarEm(posicaoDeInclusao);
@@ -352,7 +357,7 @@ class ListaDupla<Dado> : IDados<Dado>
     {
         get
         {
-            if (indice < quantosNos)
+            if (indice >= 0 && indice < Tamanho)
             {
                 PosicionarEm(indice);
 
@@ -363,7 +368,7 @@ class ListaDupla<Dado> : IDados<Dado>
         }
         set
         {
-            if (indice < quantosNos)
+            if (indice >= 0 && indice < Tamanho)
             {
                 PosicionarEm(indice);
 
