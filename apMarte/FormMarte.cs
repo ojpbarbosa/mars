@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace apMarte
@@ -288,6 +289,29 @@ namespace apMarte
 
         private void mapaPictureBox_Paint(object sender, PaintEventArgs e)
         {
+            if (openFileDialog.FileName != "")
+            {
+                lista.PosicionarNoPrimeiro();
+
+                while (lista.DadoAtual() != null)
+                {
+                    Cidade cidade = lista.DadoAtual();
+
+                    // ver mapaPictureBox.Image. e mapaPictureBox.Image.PhysicalDimension.
+                    int x = (int)(cidade.X * mapaPictureBox.Width);
+                    int y = (int)(cidade.Y * mapaPictureBox.Height);
+
+                    RectangleF rectangle = new RectangleF(x, y, 8, 8);
+
+                    Font font = new Font(codigoCidadeLabel.Font.FontFamily, 12);
+
+                    e.Graphics.FillEllipse(Brushes.Black, rectangle);
+                    e.Graphics.DrawEllipse(Pens.Black, rectangle);
+                    e.Graphics.DrawString(cidade.Nome, font, Brushes.Black, x - cidade.Nome.Length, y + 6); ;
+
+                    lista.AvancarPosicao();
+                }
+            }
         }
 
         private void FormMarte_FormClosing(object sender, FormClosingEventArgs e)

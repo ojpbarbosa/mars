@@ -38,7 +38,7 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
     }
 
     public Cidade LerRegistro(StreamReader arquivo)
-    {
+   {
         if (arquivo != null) // arquivo aberto?
         {
             string linha = arquivo.ReadLine();

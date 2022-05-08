@@ -548,7 +548,7 @@
             this.mapaPictureBox.InitialImage = null;
             this.mapaPictureBox.Location = new System.Drawing.Point(330, 45);
             this.mapaPictureBox.Name = "mapaPictureBox";
-            this.mapaPictureBox.Size = new System.Drawing.Size(1200, 600);
+            this.mapaPictureBox.Size = new System.Drawing.Size(1036, 600);
             this.mapaPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.mapaPictureBox.TabIndex = 10;
             this.mapaPictureBox.TabStop = false;
