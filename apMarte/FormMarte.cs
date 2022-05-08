@@ -252,10 +252,12 @@ namespace apMarte
 
                 Cidade cidadeSelecionada = lista.DadoAtual();
 
-                if (lista.SituacaoAtual == Situacao.navegando) // TODO: resolver problema
-                {
-                    PopularCampos(cidadeSelecionada);
-                }
+                codigoCidadeTextBox.Text = cidadeSelecionada.Codigo; // popula o text box do código da cidade
+                nomeCidadeTextBox.Text = cidadeSelecionada.Nome; // popula o text box do nome da cidade
+                xNumericUpDown.Value = cidadeSelecionada.X; // popula o numeric up down da coordenada X da cidade
+                yNumericUpDown.Value = cidadeSelecionada.Y; // popula o numeric up down da coordenada Y da cidade
+
+                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
             }
         }
 
