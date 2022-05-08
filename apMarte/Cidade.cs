@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Gabriel Willian Bartmanovicz - 21234
+// João Pedro Ferreira Barbosa - 21687
+
+using System;
 using System.IO;
 
 class Cidade : IComparable<Cidade>, IRegistro<Cidade>
@@ -18,10 +21,12 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
 
     public string Codigo { get => codigo; set => codigo = value.PadLeft(tamCodigo, '0').Substring(0, tamCodigo); }
     public string Nome { get => nome; set => nome = value.PadRight(tamCodigo, ' ').Substring(0, tamNome); }
+
+    // atributos decimais para as coordenadas 0.xxxxx
     public decimal X { get => x; set => x = value; }
     public decimal Y { get => y; set => y = value; }
 
-    public Cidade()
+    public Cidade() // construtor vazio para instância new Dado()
     { }
 
     public Cidade(string codigo, string nome, decimal x, decimal y)
@@ -64,7 +69,7 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
 
     public string ParaArquivo()
     {
-        return Codigo + Nome + X.ToString("0.00000") + Y.ToString("0.00000");
+        return Codigo + Nome + X.ToString("0.00000") + Y.ToString("0.00000"); // formata as coordenadas
     }
 
     public override string ToString()

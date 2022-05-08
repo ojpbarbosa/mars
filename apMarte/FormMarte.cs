@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Gabriel Willian Bartmanovicz - 21234
+// João Pedro Ferreira Barbosa - 21687
+
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -28,16 +31,17 @@ namespace apMarte
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                lista = new ListaDupla<Cidade>();
+                lista = new ListaDupla<Cidade>(); // instancia a lista
 
-                lista.LerDados(openFileDialog.FileName);
-                lista.ExibirDados(cidadesListBox);
-                lista.PosicionarNoPrimeiro();
+                lista.LerDados(openFileDialog.FileName); // lê os dados
+                lista.ExibirDados(cidadesListBox); // exibe os dados
+                lista.PosicionarNoPrimeiro(); // posiciona no primeiro
+                lista.SituacaoAtual = Situacao.navegando;
 
                 if (lista.Tamanho > 0)
                 {
-                    cidadesListBox.SetSelected(lista.PosicaoAtual, true);
-                    mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                    cidadesListBox.SetSelected(lista.PosicaoAtual, true); // define o item selecionado no list box
+                    mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}"; // define a status label 
                 }
             }
         }
@@ -46,98 +50,53 @@ namespace apMarte
         {
             lista.PosicionarNoPrimeiro();
 
-            Cidade cidade = lista.DadoAtual();
+            Cidade cidade = lista.DadoAtual(); // cidade recebe o dado atual
 
-            if (cidade != null)
-            {
-                PopularCampos(cidade);
-
-                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
-                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
-            }
-
-            else
-            {
-                LimparCampos();
-            }
+            PopularCampos(cidade); // popula os campos com a cidade em questão
         }
 
         private void ultimoButton_Click(object sender, EventArgs e)
         {
             lista.PosicionarNoUltimo();
 
-            Cidade cidade = lista.DadoAtual();
+            Cidade cidade = lista.DadoAtual(); // cidade recebe o dado atual
 
-            if (cidade != null)
-            {
-                PopularCampos(cidade);
-
-                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
-                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
-            }
-
-            else
-            {
-                LimparCampos();
-            }
+            PopularCampos(cidade); // popula os campos com a cidade em questão
         }
 
         private void anteriorButton_Click(object sender, EventArgs e)
         {
             lista.RetrocederPosicao();
 
-            Cidade cidade = lista.DadoAtual();
+            Cidade cidade = lista.DadoAtual(); // cidade recebe o dado atual
 
             if (cidade == null)
             {
-                lista.PosicionarNoUltimo();
+                lista.PosicionarNoUltimo(); // posiciona o dado no último elemento
 
-                cidade = lista.DadoAtual();
+                cidade = lista.DadoAtual(); // cidade recebe o dado atual
             }
 
-
-            if (cidade != null)
-            {
-                PopularCampos(cidade);
-
-                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
-                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
-            }
-
-            else
-            {
-                LimparCampos();
-            }
+            PopularCampos(cidade); // popula os campos com a cidade em questão
         }
 
         private void proximoButton_Click(object sender, EventArgs e)
         {
             lista.AvancarPosicao();
 
-            Cidade cidade = lista.DadoAtual();
+            Cidade cidade = lista.DadoAtual(); // cidade recebe o dado atual
 
             if (cidade == null)
             {
-                lista.PosicionarNoPrimeiro();
+                lista.PosicionarNoPrimeiro(); // posiciona o dado no primeiro elemento
 
-                cidade = lista.DadoAtual();
+                cidade = lista.DadoAtual(); // cidade recebe o dado atual
             }
 
-            if (cidade != null)
-            {
-                PopularCampos(cidade);
-
-                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
-                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
-            }
-
-            else
-            {
-                LimparCampos();
-            }
+            PopularCampos(cidade); // popula os campos com a cidade em questão
         }
 
-        private void procurarButton_Click(object sender, EventArgs e) // repensar lógica
+        private void procurarButton_Click(object sender, EventArgs e)
         {
             if (codigoCidadeTextBox.Text == "")
             {
@@ -151,18 +110,20 @@ namespace apMarte
                     nomeCidadeTextBox.Text.PadRight(15, ' '),
                     xNumericUpDown.Value,
                     yNumericUpDown.Value
-                );
+                ); // cidade é instânciada com os valores dos campos
 
-                if (lista.Existe(cidadeASerProcurada, out int ondeEsta))
+                if (lista.Existe(cidadeASerProcurada, out int ondeEsta)) // se a cidade existe
                 {
-                    cidadesListBox.SetSelected(ondeEsta, true); // Foca o elemento procurado no listBox
-                    mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                    lista.PosicionarEm(ondeEsta);
+                    
+                    PopularCampos(lista.DadoAtual()); // os campos são populados
                 }
 
                 else
                 {
                     LimparCampos();
                     mensagemStatusLabel.Text = "Registro inexistente!";
+                    MessageBox.Show("Registro inexistente!");
                 }
             }
         }
@@ -192,6 +153,13 @@ namespace apMarte
                     cidadesListBox.SetSelected(lista.PosicaoAtual, true);
                     mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
                 }
+
+                else if (lista.Tamanho == 0)
+                {
+                    LimparCampos();
+                }
+
+                mapaPictureBox.Refresh();
             }
         }
 
@@ -254,6 +222,8 @@ namespace apMarte
                         lista.ExibirDados(cidadesListBox);
 
                         mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+
+                        mapaPictureBox.Refresh();
                     }
                 }
 
@@ -279,11 +249,13 @@ namespace apMarte
             if (lista.Tamanho > 0)
             {
                 lista.PosicionarEm(cidadesListBox.SelectedIndex);
-                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
 
                 Cidade cidadeSelecionada = lista.DadoAtual();
-                
-                PopularCampos(cidadeSelecionada);
+
+                if (lista.SituacaoAtual == Situacao.navegando) // TODO: resolver problema
+                {
+                    PopularCampos(cidadeSelecionada);
+                }
             }
         }
 
@@ -297,7 +269,6 @@ namespace apMarte
                 {
                     Cidade cidade = lista.DadoAtual();
 
-                    // ver mapaPictureBox.Image. e mapaPictureBox.Image.PhysicalDimension.
                     int x = (int)(cidade.X * mapaPictureBox.Width);
                     int y = (int)(cidade.Y * mapaPictureBox.Height);
 
@@ -314,29 +285,40 @@ namespace apMarte
             }
         }
 
-        private void FormMarte_FormClosing(object sender, FormClosingEventArgs e)
+        private void FormMarte_FormClosing(object sender, FormClosingEventArgs e) // evento de fechamento do forms
         {
-            if (openFileDialog.FileName != "")
+            if (openFileDialog.FileName != "") // se um arquivo foi aberto
             {
-                // lista.Ordenar();
-                lista.GravarDados(openFileDialog.FileName);
+                lista.Ordenar(); // a lista é ordenada
+                lista.GravarDados(openFileDialog.FileName); // e depois tem seus nós gravados
             }
         }
 
-        private void PopularCampos(Cidade cidade)
+        private void PopularCampos(Cidade cidade) // popula os campos do forms
         {
-            codigoCidadeTextBox.Text = cidade.Codigo;
-            nomeCidadeTextBox.Text = cidade.Nome;
-            xNumericUpDown.Value = cidade.X;
-            yNumericUpDown.Value = cidade.Y;
+            if (cidade != null)
+            {
+                codigoCidadeTextBox.Text = cidade.Codigo; // popula o text box do código da cidade
+                nomeCidadeTextBox.Text = cidade.Nome; // popula o text box do nome da cidade
+                xNumericUpDown.Value = cidade.X; // popula o numeric up down da coordenada X da cidade
+                yNumericUpDown.Value = cidade.Y; // popula o numeric up down da coordenada Y da cidade
+
+                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
+                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+            }
+
+            else
+            {
+                LimparCampos();
+            }
         }
 
-        private void LimparCampos()
+        private void LimparCampos() // limpa os campos do forms
         {
-            codigoCidadeTextBox.Text = "";
-            nomeCidadeTextBox.Text = "";
-            xNumericUpDown.Value = 0;
-            yNumericUpDown.Value = 0;
+            codigoCidadeTextBox.Text = ""; // limpa o text box do código da cidade
+            nomeCidadeTextBox.Text = ""; // limpa o text box do nome da cidade
+            xNumericUpDown.Value = 0; // limpa o numeric up down da coordenada X da cidade
+            yNumericUpDown.Value = 0; // limpa o numeric up down da coordenada Y da cidade
         }
     }
 }
