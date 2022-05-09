@@ -40,8 +40,7 @@ namespace apMarte
 
                 if (lista.Tamanho > 0)
                 {
-                    cidadesListBox.SetSelected(lista.PosicaoAtual, true); // define o item selecionado no list box
-                    mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}"; // define a status label 
+                    PopularCampos(lista.DadoAtual());
                 }
             }
         }
@@ -163,7 +162,7 @@ namespace apMarte
             }
         }
 
-        private void novoButton_Click(object sender, EventArgs e)
+        private void novoButton_Click(object sender, EventArgs e) // modo de inclusão
         {
             cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
                 proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
@@ -176,7 +175,7 @@ namespace apMarte
             codigoCidadeTextBox.Focus();
         }
 
-        private void cancelarButton_Click(object sender, EventArgs e)
+        private void cancelarButton_Click(object sender, EventArgs e) // modo normal
         {
             cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
                     proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
@@ -195,23 +194,23 @@ namespace apMarte
         private void salvarButton_Click(object sender, EventArgs e)
         {
             if (codigoCidadeTextBox.Text == "" || nomeCidadeTextBox.Text == "" ||
-                xNumericUpDown.Value == 0 || yNumericUpDown.Value == 0)
+                xNumericUpDown.Value == 0 || yNumericUpDown.Value == 0) // se os campos são inválidos
             {
                 MessageBox.Show("Campos inválidos!");
             }
 
             else
             {
-                Cidade cidadeASerCriada = new Cidade(
+                Cidade cidade = new Cidade(
                     codigoCidadeTextBox.Text.PadLeft(3, ' '),
                     nomeCidadeTextBox.Text.PadRight(15, ' '),
                     xNumericUpDown.Value,
                     yNumericUpDown.Value
-                );
+                ); // instancia uma nova cidade com os campos
 
-                if (!lista.Existe(cidadeASerCriada, out _))
+                if (!lista.Existe(cidade, out _))
                 {
-                    if (lista.Incluir(cidadeASerCriada))
+                    if (lista.Incluir(cidade))
                     {
                         cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
                         proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
@@ -221,26 +220,19 @@ namespace apMarte
 
                         lista.ExibirDados(cidadesListBox);
 
-                        mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
-
                         mapaPictureBox.Refresh();
                     }
                 }
 
                 else
                 {
-                    MessageBox.Show($"Cidade com código {cidadeASerCriada.Codigo.Trim()} já existente!");
+                    MessageBox.Show($"Cidade com código {cidade.Codigo.Trim()} já existente!");
                 }
             }
         }
 
         private void sairButton_Click(object sender, EventArgs e)
         {
-            if (openFileDialog.FileName != "")
-            {
-                lista.GravarDados(openFileDialog.FileName);
-            }
-
             Close();
         }
 
@@ -263,24 +255,24 @@ namespace apMarte
 
         private void mapaPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            if (openFileDialog.FileName != "")
+            if (openFileDialog.FileName != "") // se um arquivo foi aberto
             {
                 lista.PosicionarNoPrimeiro();
 
                 while (lista.DadoAtual() != null)
                 {
-                    Cidade cidade = lista.DadoAtual();
+                    Cidade cidade = lista.DadoAtual(); // cidade recebe o dado atual
 
-                    int x = (int)(cidade.X * mapaPictureBox.Width);
-                    int y = (int)(cidade.Y * mapaPictureBox.Height);
+                    int x = (int)(cidade.X * mapaPictureBox.Width); // calcula a coordenada relativa ao X
+                    int y = (int)(cidade.Y * mapaPictureBox.Height); // calcula a coordenada relativa ao Y
 
-                    RectangleF rectangle = new RectangleF(x, y, 8, 8);
+                    RectangleF rectangle = new RectangleF(x, y, 8, 8); // cria um retângulo nas coordenadas (x, y) com 8px
 
-                    Font font = new Font(codigoCidadeLabel.Font.FontFamily, 12);
+                    Font font = new Font(codigoCidadeLabel.Font.FontFamily, 12); // instancia uma font assim como as labels
 
-                    e.Graphics.FillEllipse(Brushes.Black, rectangle);
-                    e.Graphics.DrawEllipse(Pens.Black, rectangle);
-                    e.Graphics.DrawString(cidade.Nome, font, Brushes.Black, x - cidade.Nome.Length, y + 6); ;
+                    e.Graphics.FillEllipse(Brushes.Black, rectangle); // preenche o retângulo
+                    e.Graphics.DrawEllipse(Pens.Black, rectangle); // desenha o retângulo
+                    e.Graphics.DrawString(cidade.Nome, font, Brushes.Black, x - cidade.Nome.Length * 2, y - 20); // desenha o nome da cidade
 
                     lista.AvancarPosicao();
                 }
