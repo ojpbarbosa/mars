@@ -163,7 +163,7 @@ class ListaDupla<Dado> : IDados<Dado>
                     achou = true; // o dado foi encontrado
                 }
 
-                else if (DadoAtual().CompareTo(procurado) > 0 && SituacaoAtual != Situacao.excluindo) // se o dado atual for maior que o atual procurado
+                else if (DadoAtual().CompareTo(procurado) > 0) // se o dado atual for maior que o atual procurado
                 {
                     fim = true; // a posição de inclusão foi ultrapassada e fim recebe true
                 }
