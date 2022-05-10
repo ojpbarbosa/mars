@@ -120,7 +120,7 @@ namespace apMarte
                     PopularCampos(lista.DadoAtual()); // popula os campos com a cidade procurada
                 }
 
-                else // se não
+                else // senão
                 {
                     LimparCampos(); // limpa os campos
 
@@ -148,7 +148,7 @@ namespace apMarte
                 ); // mensagem informando sobre o código inválido
             }
 
-            else // se não
+            else // senão
             {
                 Cidade cidadeASerExcluida = new Cidade(
                     codigoCidadeTextBox.Text.PadLeft(3, ' '),
@@ -179,7 +179,7 @@ namespace apMarte
                         ); // mensagem informando sobre o êxito ao excluir
                     }
 
-                    else // se não
+                    else // senão
                     {
                         MessageBox.Show(
                            "Erro ao excluir!",
