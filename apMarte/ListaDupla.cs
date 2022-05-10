@@ -47,7 +47,7 @@ class ListaDupla<Dado> : IDados<Dado>
 
             while (!arquivo.EndOfStream) // enquanto o arquivo não terminar de ser lido
             {
-                IncluirAposFim(new Dado().LerRegistro(arquivo)); // inclui um novo dado a partir da leitura do registro do arquivo
+                Incluir(new Dado().LerRegistro(arquivo)); // inclui um novo dado a partir da leitura do registro do arquivo
             }
 
             arquivo.Close(); // fecha o arquivo
