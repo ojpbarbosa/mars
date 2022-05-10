@@ -36,8 +36,6 @@ class ListaDupla<Dado> : IDados<Dado>
     public bool EstaNoFim { get => atual == ultimo; } // verifica se o atual está no fim da lista
     public bool EstaVazio { get => quantosNos == 0; } // verifica se a lista está vazia
     public int Tamanho { get => quantosNos; } // tamanho da lista
-    public NoDuplo<Dado> Primeiro { get => primeiro; } // primeiro nó da lista
-    public NoDuplo<Dado> Ultimo { get => ultimo; } // último nó da lista
 
     public void LerDados(string nomeArquivo) // leitura e armazenamento dos dados
     {
@@ -49,7 +47,7 @@ class ListaDupla<Dado> : IDados<Dado>
 
             while (!arquivo.EndOfStream) // enquanto o arquivo não terminar de ser lido
             {
-                Incluir(new Dado().LerRegistro(arquivo)); // inclui um novo dado a partir da leitura do registro do arquivo
+                IncluirAposFim(new Dado().LerRegistro(arquivo)); // inclui um novo dado a partir da leitura do registro do arquivo
             }
 
             arquivo.Close(); // fecha o arquivo
@@ -145,6 +143,8 @@ class ListaDupla<Dado> : IDados<Dado>
             return false; // o dado não existe
         }
 
+        situacaoAtual = Situacao.pesquisando; // define a situação atual como pesquisando
+
         bool achou = false, fim = false;
 
         ondeEsta = 0;
@@ -163,7 +163,7 @@ class ListaDupla<Dado> : IDados<Dado>
                     achou = true; // o dado foi encontrado
                 }
 
-                else if (DadoAtual().CompareTo(procurado) > 0) // se o dado atual for maior que o atual procurado
+                else if (DadoAtual().CompareTo(procurado) > 0 && SituacaoAtual != Situacao.excluindo) // se o dado atual for maior que o atual procurado
                 {
                     fim = true; // a posição de inclusão foi ultrapassada e fim recebe true
                 }
@@ -316,7 +316,12 @@ class ListaDupla<Dado> : IDados<Dado>
                     NoDuplo<Dado> novoNo = new NoDuplo<Dado>(novoValor); // instancia um novo nó
                     
                     novoNo.Ant = atual.Ant; // o nó anterior ao novo nó recebe o nó anterior ao nó atual
-                    novoNo.Ant.Prox = novoNo; // o próximo nó do nó anterior ao novo nó recebe novo nó
+                    
+                    if (novoNo.Ant != null)
+                    {
+                        novoNo.Ant.Prox = novoNo; // o próximo nó do nó anterior ao novo nó recebe novo nó
+                    }
+
                     novoNo.Prox = atual; // o próximo nó do novo nó recebe atual
                     atual.Ant = novoNo; // o nó anteior ao atual recebe novo nó
                     atual = novoNo; // atual passa a ser o novo nó
@@ -352,7 +357,12 @@ class ListaDupla<Dado> : IDados<Dado>
             NoDuplo<Dado> novoNo = new NoDuplo<Dado>(novoValor); // instancia um novo nó
 
             novoNo.Ant = atual.Ant; // o nó anterior ao novo nó recebe o nó anterior ao nó atual
-            novoNo.Ant.Prox = novoNo; // o próximo nó do nó anterior ao novo nó recebe novo nó
+
+            if (novoNo.Ant != null) // se o nó anterior ao novo nó não for null
+            {
+                novoNo.Ant.Prox = novoNo; // o próximo nó do nó anterior ao novo nó recebe novo nó
+            }
+
             novoNo.Prox = atual; // o próximo nó do novo nó recebe atual
             atual.Ant = novoNo; // o nó anteior ao atual recebe novo nó
             atual = novoNo; // atual passa a ser o novo nó
@@ -453,7 +463,7 @@ class ListaDupla<Dado> : IDados<Dado>
 
         PosicionarNoPrimeiro(); // posiciona o atual no primeiro para percorrer a lista
 
-        lista.Text = ""; // limpa o text box
+        lista.Clear(); // limpa o text box
 
         while (atual != null) // enquanto atual for diferente de null
         {
@@ -471,14 +481,14 @@ class ListaDupla<Dado> : IDados<Dado>
 
         PosicionarNoPrimeiro(); // posiciona o atual no primeiro para percorrer a lista
 
-        while (!EstaVazio) // enquanto ainda há elementos na lista
+        while (atual != null) // enquanto atual não for null
         {
             ordernada.Incluir(DadoAtual()); // inclui na lista ordenada
 
-            Excluir(DadoAtual()); // remove da lista
+            AvancarPosicao(); // avança o atual
         }
 
-        primeiro = ordernada.Primeiro; // o ponteiro relativo ao primeiro nó da ordenada é atribuído ao primeiro nó da lista
-        ultimo = ordernada.Ultimo; // o ponteiro relativo ao último nó da ordenada é atribuído ao último nó da lista
+        primeiro = ordernada.primeiro; // o ponteiro relativo ao primeiro nó da ordenada é atribuído ao primeiro nó da lista
+        ultimo = ordernada.ultimo; // o ponteiro relativo ao último nó da ordenada é atribuído ao último nó da lista
     }
 }

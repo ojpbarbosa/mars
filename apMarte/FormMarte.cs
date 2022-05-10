@@ -35,13 +35,12 @@ namespace apMarte
 
                 lista.LerDados(openFileDialog.FileName); // lê os dados
                 lista.ExibirDados(cidadesListBox); // exibe os dados
+
                 lista.PosicionarNoPrimeiro(); // posiciona no primeiro
+
                 lista.SituacaoAtual = Situacao.navegando;
 
-                if (lista.Tamanho > 0)
-                {
-                    PopularCampos(lista.DadoAtual());
-                }
+                PopularCampos(lista.DadoAtual()); // popula os campos com a primeira cidade
             }
         }
 
@@ -49,57 +48,62 @@ namespace apMarte
         {
             lista.PosicionarNoPrimeiro();
 
-            Cidade cidade = lista.DadoAtual(); // cidade recebe o dado atual
+            Cidade cidadeInicial = lista.DadoAtual(); // cidade recebe o dado atual
 
-            PopularCampos(cidade); // popula os campos com a cidade em questão
+            PopularCampos(cidadeInicial); // popula os campos com a cidade inicial
         }
 
         private void ultimoButton_Click(object sender, EventArgs e)
         {
             lista.PosicionarNoUltimo();
 
-            Cidade cidade = lista.DadoAtual(); // cidade recebe o dado atual
+            Cidade ultimaCidade = lista.DadoAtual(); // cidade recebe o dado atual
 
-            PopularCampos(cidade); // popula os campos com a cidade em questão
+            PopularCampos(ultimaCidade); // popula os campos com a última cidade
         }
 
         private void anteriorButton_Click(object sender, EventArgs e)
         {
             lista.RetrocederPosicao();
 
-            Cidade cidade = lista.DadoAtual(); // cidade recebe o dado atual
+            Cidade cidadeAnterior = lista.DadoAtual(); // cidade recebe o dado atual
 
-            if (cidade == null)
+            if (cidadeAnterior == null)
             {
                 lista.PosicionarNoUltimo(); // posiciona o dado no último elemento
 
-                cidade = lista.DadoAtual(); // cidade recebe o dado atual
+                cidadeAnterior = lista.DadoAtual(); // cidade recebe o dado atual
             }
 
-            PopularCampos(cidade); // popula os campos com a cidade em questão
+            PopularCampos(cidadeAnterior); // popula os campos com a cidade anterior
         }
 
         private void proximoButton_Click(object sender, EventArgs e)
         {
             lista.AvancarPosicao();
 
-            Cidade cidade = lista.DadoAtual(); // cidade recebe o dado atual
+            Cidade proximaCidade = lista.DadoAtual(); // cidade recebe o dado atual
 
-            if (cidade == null)
+            if (proximaCidade == null)
             {
                 lista.PosicionarNoPrimeiro(); // posiciona o dado no primeiro elemento
 
-                cidade = lista.DadoAtual(); // cidade recebe o dado atual
+                proximaCidade = lista.DadoAtual(); // cidade recebe o dado atual
             }
 
-            PopularCampos(cidade); // popula os campos com a cidade em questão
+            PopularCampos(proximaCidade); // popula os campos com a próxima cidade
         }
 
         private void procurarButton_Click(object sender, EventArgs e)
         {
-            if (codigoCidadeTextBox.Text == "")
+            if (codigoCidadeTextBox.Text == "") // se o código é inválido
             {
-                MessageBox.Show("Código de cidade inválido!");
+                MessageBox.Show(
+                    "Código de cidade inválido!",
+                    "Procurar",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                ); // mensagem informando sobre o código inválido
             }
 
             else
@@ -109,56 +113,82 @@ namespace apMarte
                     nomeCidadeTextBox.Text.PadRight(15, ' '),
                     xNumericUpDown.Value,
                     yNumericUpDown.Value
-                ); // cidade é instânciada com os valores dos campos
+                ); // instancia a cidade a ser procurada
 
-                if (lista.Existe(cidadeASerProcurada, out int ondeEsta)) // se a cidade existe
+                if (lista.Existe(cidadeASerProcurada, out _)) // se a cidade existe
                 {
-                    lista.PosicionarEm(ondeEsta);
-                    
-                    PopularCampos(lista.DadoAtual()); // os campos são populados
+                    PopularCampos(lista.DadoAtual()); // popula os campos com a cidade procurada
                 }
 
-                else
+                else // se não
                 {
-                    LimparCampos();
-                    mensagemStatusLabel.Text = "Registro inexistente!";
-                    MessageBox.Show("Registro inexistente!");
+                    LimparCampos(); // limpa os campos
+
+                    mensagemStatusLabel.Text = "Cidade inexistente!"; // define a status label
+
+                    MessageBox.Show(
+                        "Cidade inexistente!",
+                        "Procurar",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    ); // mensagem informando sobre a inexistência da cidade
                 }
             }
         }
 
         private void excluirButton_Click(object sender, EventArgs e)
         {
-            if (codigoCidadeTextBox.Text == "")
+            if (codigoCidadeTextBox.Text == "") // se o código é inválido
             {
-                MessageBox.Show("Código de cidade inválido!");
+                MessageBox.Show(
+                    "Código de cidade inválido!",
+                    "Excluir",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                ); // mensagem informando sobre o código inválido
             }
 
-            else
+            else // se não
             {
                 Cidade cidadeASerExcluida = new Cidade(
                     codigoCidadeTextBox.Text.PadLeft(3, ' '),
                     nomeCidadeTextBox.Text.PadRight(15, ' '),
                     xNumericUpDown.Value,
                     yNumericUpDown.Value
-                );
+                ); // instancia a cidade a ser excluída
 
-                lista.Excluir(cidadeASerExcluida);
-                lista.ExibirDados(cidadesListBox);
-                lista.PosicionarNoPrimeiro();
-
-                if (lista.PosicaoAtual != -1)
+                if (MessageBox.Show(
+                   "Exluir?",
+                   "Excluir",
+                   MessageBoxButtons.YesNo,
+                   MessageBoxIcon.Question) == DialogResult.Yes) // mensagem confirmando a exclusão
                 {
-                    cidadesListBox.SetSelected(lista.PosicaoAtual, true);
-                    mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
-                }
+                    if (lista.Excluir(cidadeASerExcluida)) // se a cidade foi excluída
+                    {
+                        lista.ExibirDados(cidadesListBox); // exibe os dados
 
-                else if (lista.Tamanho == 0)
-                {
-                    LimparCampos();
-                }
+                        LimparCampos(); // limpa os campos
 
-                mapaPictureBox.Refresh();
+                        mapaPictureBox.Refresh(); // atualiza o picture box
+
+                        MessageBox.Show(
+                            "Cidade excluída!",
+                            "Excluir",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                        ); // mensagem informando sobre o êxito ao excluir
+                    }
+
+                    else // se não
+                    {
+                        MessageBox.Show(
+                           "Erro ao excluir!",
+                           "Excluir",
+                           MessageBoxButtons.OK,
+                           MessageBoxIcon.Error
+                       ); // mensagem informando sobre o erro ao excluir
+                    }
+                }
             }
         }
 
@@ -168,27 +198,34 @@ namespace apMarte
                 proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
                     novoButton.Enabled = excluirButton.Enabled = sairButton.Enabled = false; // desativa o list box e os botões
 
-            cancelarButton.Enabled = salvarButton.Enabled = true;
+            cancelarButton.Enabled = salvarButton.Enabled = true; // ativa o botão cancelar e salvar
 
             LimparCampos(); // limpa os campos
 
-            codigoCidadeTextBox.Focus();
+            codigoCidadeTextBox.Focus(); // ativa no text box do código da cidade
         }
 
         private void cancelarButton_Click(object sender, EventArgs e) // modo normal
         {
-            cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
-                    proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
-                        novoButton.Enabled = excluirButton.Enabled = sairButton.Enabled = true; // ativa o list box e os botões
+            if (MessageBox.Show(
+                "Cancelar?",
+                "Cancelar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes) // mensagem confirmando o cancelamento
+            {
+                cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
+                   proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
+                       novoButton.Enabled = excluirButton.Enabled = sairButton.Enabled = true; // ativa o list box e os botões
 
-            cancelarButton.Enabled = salvarButton.Enabled = false;
+                cancelarButton.Enabled = salvarButton.Enabled = false; // desativa o botão cancelar e salvar
 
-            LimparCampos(); // limpa os campos
+                LimparCampos(); // limpa os campos
 
-            lista.PosicionarNoPrimeiro();
-            
-            cidadesListBox.SetSelected(lista.PosicaoAtual, true);
-            mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                lista.PosicionarNoPrimeiro(); // posiciona no primeiro
+
+                cidadesListBox.SetSelected(lista.PosicaoAtual, true); // define o item selecionado no list box
+                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}"; // define a status label
+            }
         }
 
         private void salvarButton_Click(object sender, EventArgs e)
@@ -196,121 +233,172 @@ namespace apMarte
             if (codigoCidadeTextBox.Text == "" || nomeCidadeTextBox.Text == "" ||
                 xNumericUpDown.Value == 0 || yNumericUpDown.Value == 0) // se os campos são inválidos
             {
-                MessageBox.Show("Campos inválidos!");
+                MessageBox.Show(
+                    "Campos inválidos!",
+                    "Salvar",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                ); // mensagem informando sobre os campos inválidos
             }
 
-            else
+            else // senão
             {
-                Cidade cidade = new Cidade(
-                    codigoCidadeTextBox.Text.PadLeft(3, ' '),
-                    nomeCidadeTextBox.Text.PadRight(15, ' '),
-                    xNumericUpDown.Value,
-                    yNumericUpDown.Value
-                ); // instancia uma nova cidade com os campos
-
-                if (!lista.Existe(cidade, out _))
+                if (MessageBox.Show(
+                    "Salvar?",
+                    "Salvar",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) == DialogResult.Yes) // mensagem confirmando o salvamento
                 {
-                    if (lista.Incluir(cidade))
+                    Cidade cidadeASerSalva = new Cidade(
+                        codigoCidadeTextBox.Text.PadLeft(3, ' '),
+                        nomeCidadeTextBox.Text.PadRight(15, ' '),
+                        xNumericUpDown.Value,
+                        yNumericUpDown.Value
+                    ); // instancia uma nova cidade com os campos
+
+                    if (!lista.Existe(cidadeASerSalva, out _)) // se a cidade não existe
                     {
-                        cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
-                        proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
-                            novoButton.Enabled = excluirButton.Enabled = sairButton.Enabled = true; // ativa o list box e os botões
+                        if (lista.Incluir(cidadeASerSalva)) // se a inclusão ocorreu
+                        {
+                            cidadesListBox.Enabled = inicioButton.Enabled = anteriorButton.Enabled =
+                            proximoButton.Enabled = ultimoButton.Enabled = procurarButton.Enabled =
+                                novoButton.Enabled = excluirButton.Enabled = sairButton.Enabled = true; // ativa o list box e os botões
 
-                        cancelarButton.Enabled = salvarButton.Enabled = false;
+                            cancelarButton.Enabled = salvarButton.Enabled = false; // desativa o botão cancelar e salvar
 
-                        lista.ExibirDados(cidadesListBox);
+                            lista.Ordenar(); // ordena a lista
+                            lista.ExibirDados(cidadesListBox); // exibe os dados
 
-                        mapaPictureBox.Refresh();
+                            PopularCampos(cidadeASerSalva); // popula os campos com a cidade a ser salva
+
+                            mapaPictureBox.Refresh(); // atualiza o picture box
+
+                            MessageBox.Show(
+                                "Cidade salva!",
+                                "Salvar",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information
+                            ); // mensagem informando sobre o êxito ao salvar
+                        }
+
+                        else
+                        {
+                            MessageBox.Show(
+                                "Erro ao salvar!",
+                                "Salvar",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error
+                            ); // mensagem informando sobre o erro ao salvar
+                        }
                     }
-                }
 
-                else
-                {
-                    MessageBox.Show($"Cidade com código {cidade.Codigo.Trim()} já existente!");
+                    else
+                    {
+                        MessageBox.Show(
+                            "Cidade já existente!",
+                            "Salvar",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                        ); // mensagem informando sobre a existência da cidade
+
+                        PopularCampos(lista.DadoAtual()); // popula os campos com a cidade existente
+                    }
                 }
             }
         }
 
         private void sairButton_Click(object sender, EventArgs e)
         {
-            Close();
+            if (MessageBox.Show(
+                "Sair?",
+                "Sair",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes) // mensagem confirmando a saída
+            {
+                Close(); // fecha o form
+            }
         }
 
         private void cidadesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lista.Tamanho > 0)
+            if (lista != null && lista.Tamanho > 0) // se lista não for null e há elementos na lista
             {
-                lista.PosicionarEm(cidadesListBox.SelectedIndex);
+                lista.PosicionarEm(cidadesListBox.SelectedIndex); // posiciona o atual no indíce selecionado
 
-                Cidade cidadeSelecionada = lista.DadoAtual();
+                Cidade cidadeSelecionada = lista.DadoAtual(); // cidade recebe o dado atual relativo ao indíce
 
                 codigoCidadeTextBox.Text = cidadeSelecionada.Codigo; // popula o text box do código da cidade
                 nomeCidadeTextBox.Text = cidadeSelecionada.Nome; // popula o text box do nome da cidade
                 xNumericUpDown.Value = cidadeSelecionada.X; // popula o numeric up down da coordenada X da cidade
                 yNumericUpDown.Value = cidadeSelecionada.Y; // popula o numeric up down da coordenada Y da cidade
 
-                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}"; // define a status label
             }
         }
 
-        private void mapaPictureBox_Paint(object sender, PaintEventArgs e)
+        private void mapaPictureBox_Paint(object sender, PaintEventArgs e) // evento paint do picture box
         {
-            if (openFileDialog.FileName != "") // se um arquivo foi aberto
+            if (lista != null && lista.Tamanho > 0) // se lista não for null e há elementos na lista
             {
-                lista.PosicionarNoPrimeiro();
+                lista.PosicionarNoPrimeiro(); // posiciona o atual no primeiro
 
-                while (lista.DadoAtual() != null)
+                while (lista.DadoAtual() != null) // enquanto atual for diferente de null
                 {
-                    Cidade cidade = lista.DadoAtual(); // cidade recebe o dado atual
+                    Cidade cidadeASerDesenhada = lista.DadoAtual(); // cidade recebe o dado atual
 
-                    int x = (int)(cidade.X * mapaPictureBox.Width); // calcula a coordenada relativa ao X
-                    int y = (int)(cidade.Y * mapaPictureBox.Height); // calcula a coordenada relativa ao Y
+                    int x = (int)(cidadeASerDesenhada.X * mapaPictureBox.Width); // calcula a coordenada relativa ao X
+                    int y = (int)(cidadeASerDesenhada.Y * mapaPictureBox.Height); // calcula a coordenada relativa ao Y
 
-                    RectangleF rectangle = new RectangleF(x, y, 8, 8); // cria um retângulo nas coordenadas (x, y) com 8px
+                    e.Graphics.FillEllipse(Brushes.Black, new Rectangle(x, y, 8, 8)); // desenha a cidade
 
-                    Font font = new Font(codigoCidadeLabel.Font.FontFamily, 12); // instancia uma font assim como as labels
+                    Font font = new Font("Arial", 12); // instancia uma font Arial
+                    e.Graphics.DrawString(
+                        cidadeASerDesenhada.Nome,
+                        font, Brushes.Black,
+                        x - cidadeASerDesenhada.Nome.Length * 2,
+                        y - 20
+                    ); // desenha o nome da cidade
 
-                    e.Graphics.FillEllipse(Brushes.Black, rectangle); // preenche o retângulo
-                    e.Graphics.DrawEllipse(Pens.Black, rectangle); // desenha o retângulo
-                    e.Graphics.DrawString(cidade.Nome, font, Brushes.Black, x - cidade.Nome.Length * 2, y - 20); // desenha o nome da cidade
-
-                    lista.AvancarPosicao();
+                    lista.AvancarPosicao(); // avança o atual
                 }
             }
         }
 
         private void FormMarte_FormClosing(object sender, FormClosingEventArgs e) // evento de fechamento do forms
         {
-            if (openFileDialog.FileName != "") // se um arquivo foi aberto
+            if (lista != null && openFileDialog.FileName != "") // se lista não foi null e um arquivo foi aberto
             {
                 lista.Ordenar(); // a lista é ordenada
-                lista.GravarDados(openFileDialog.FileName); // e depois tem seus nós gravados
+                lista.GravarDados(openFileDialog.FileName); // e depois tem seus dados gravados
             }
         }
 
         private void PopularCampos(Cidade cidade) // popula os campos do forms
         {
-            if (cidade != null)
+            if (cidade != null) // se a cidade não é null
             {
                 codigoCidadeTextBox.Text = cidade.Codigo; // popula o text box do código da cidade
                 nomeCidadeTextBox.Text = cidade.Nome; // popula o text box do nome da cidade
                 xNumericUpDown.Value = cidade.X; // popula o numeric up down da coordenada X da cidade
                 yNumericUpDown.Value = cidade.Y; // popula o numeric up down da coordenada Y da cidade
 
-                cidadesListBox.SetSelected(lista.PosicaoAtual, true);
-                mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}";
+                if (lista.PosicaoAtual != -1) // se a posição não for inválida
+                {
+                    cidadesListBox.SetSelected(lista.PosicaoAtual, true); // define o item selecionado do list box
+                    mensagemStatusLabel.Text = $"Registro {lista.PosicaoAtual + 1}/{lista.Tamanho}"; // define a status label
+                }
             }
 
-            else
+            else // senão
             {
-                LimparCampos();
+                LimparCampos(); // limpa os campos
             }
         }
 
         private void LimparCampos() // limpa os campos do forms
         {
-            codigoCidadeTextBox.Text = ""; // limpa o text box do código da cidade
-            nomeCidadeTextBox.Text = ""; // limpa o text box do nome da cidade
+            codigoCidadeTextBox.Clear(); // limpa o text box do código da cidade
+            nomeCidadeTextBox.Clear(); // limpa o text box do nome da cidade
             xNumericUpDown.Value = 0; // limpa o numeric up down da coordenada X da cidade
             yNumericUpDown.Value = 0; // limpa o numeric up down da coordenada Y da cidade
         }
